@@ -1,0 +1,28 @@
+<% include partials/header.ejs %>
+<div class="container">
+  <% if (message) { %>
+  <p class="text-center text-danger"><%= message %></p>
+  <% } %>
+
+  <% if (doctor) { %>
+  <form class="add-player-form" action="/edit/<%= doctor.id_medic %>" method="post">
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="first-name">First Name</label>
+        <input type="text" class="form-control" name="nume" id="first-name" value="<%= doctor.nume %>" required>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="last-name">Last Name</label>
+        <input type="text" class="form-control" name="prenume" id="last-name" value="<%= doctor.prenume %>" required>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success float-right">Update Doctor</button>
+  </form>
+  <% } else { %>
+  <p class="text-center">Doctor Not Found. Go <a href="/add">here</a> to add doctors.</p>
+  <% } %>
+</div>
+</div>
+</body>
+
+</html>

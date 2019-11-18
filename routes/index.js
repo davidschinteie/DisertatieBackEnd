@@ -60,4 +60,49 @@ router.post('/add', (req, res) => {
 
 });
 
+router.get('/edit/:id', (req, res) => {
+  let doctorId = req.params.id;
+  let query = `SELECT * FROM medic WHERE id_medic = ${doctorId}`;
+  
+  db.query(query, (err, result) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    res.render('edit_doctor.ejs', {
+      title: 'Edit Doctor',
+      doctor: result[0],
+      message: ''
+    });
+  });
+});
+
+router.post('/edit/:id', (req, res) => {
+  let doctorId = req.params.id;
+  let numeDoctor = req.body.nume;
+  let prenumeDoctor = req.body.prenume;
+
+  let updateDoctorQuery = `UPDATE medic SET nume = '${numeDoctor}', prenume = '${prenumeDoctor}' WHERE medic.id_medic='${doctorId}'`;
+
+  db.query(updateDoctorQuery, (err, result) => {
+    if(err) {
+      return res.status(500).send(err);
+    }
+    // console.log('Doctor updated successfully!');
+    res.redirect('/');
+  });
+});
+
+router.get('/delete/:id', (req, res) => {
+  let doctorId = req.params.id;
+  let deleteDoctorQuery = `DELETE FROM medic WHERE id_medic = ${doctorId}`;
+
+  db.query(deleteDoctorQuery, (err) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    // console.log('Doctor deleted successfully!');
+    res.redirect('/');
+  });
+});
+
 module.exports = router;
