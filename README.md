@@ -9,7 +9,7 @@ Aplicatie Web de gestionare a programilor efectuate in cadrul unei clinici medic
     - GraphQL for API ??
     - Elixir.js ??
     
-# Featurer-uri de implementat (MVP):
+# Feature-uri de implementat (MVP):
   - Crearea unui profil de Pacient: Userul sa se poata autentifica in aplicatie si sa-si poata face o programare in functie de disponibilitatea medicilor si a cabinetelor. (o vizualizarea a unui calendar cu datele disponibile si orele la care poate sa-si faca programarea)
 - Crearea unui profil de Medic: Medicul sa poata sa vizualizeze calendarul cu programarile facute pana acum.
 - Crearea unui profil de Admin: Adminul care sa poata sa aiba acces la toate datele si sa poata sa faca request-uri cu privire la gradul de ocupare a clinicii, medicii cei mai 'ceruti', pacientii 'fideli' etc.
