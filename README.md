@@ -2,6 +2,9 @@
 
 Aplicatie Web de gestionare a programilor efectuate in cadrul unei clinici medicale:
 
+# Getting Started:
+`npm start dev`
+
 # Tehnologii folosite
   - DB: MySQL
   - BackEnd: Node.JS with Express

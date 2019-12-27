@@ -14,7 +14,8 @@ const db = mysql.createConnection({
   password: 'password',
   port: '52000',
   // database: 'insiderapp'
-  database: 'medicalApp'
+  database: 'medicalApp',
+  multipleStatements: true
 });
 
 // connect to database
