@@ -13,7 +13,6 @@ const db = mysql.createConnection({
   user: 'admin',
   password: 'password',
   port: '52000',
-  // database: 'insiderapp'
   database: 'medicalApp',
   multipleStatements: true
 });
@@ -26,6 +25,19 @@ db.connect((err) => {
   console.log('Connected to database');
 });
 global.db = db;
+
+// create Pool of connections
+const dbPool = mysql.createPool({
+  connectionLimit: 10,
+  host: 'localhost',
+  user: 'admin',
+  password: 'password',
+  port: '52000',
+  database: 'medicalApp',
+  dateStrings: true,
+  multipleStatements: true
+});
+global.dbPool = dbPool;
 
 // Init middleware
 // app.use(logger);
@@ -43,6 +55,10 @@ app.use(express.urlencoded({
 // routes for the app
 // Doctors API Routes
 app.use('/api/doctors', require('./routes/api/doctors'));
+// Polyclinics API Routes
+app.use('/api/polyclinics', require('./routes/api/polyclinics'));
+// Medical Offices API Routes
+app.use('/api/offices', require('./routes/api/offices'));
 
 // set the app to listen on the port
 app.listen(port, () => {

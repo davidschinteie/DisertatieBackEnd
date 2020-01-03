@@ -3,7 +3,7 @@
 Aplicatie Web de gestionare a programilor efectuate in cadrul unei clinici medicale:
 
 # Getting Started:
-`npm start dev`
+`npm run dev`
 
 # Tehnologii folosite
   - DB: MySQL
