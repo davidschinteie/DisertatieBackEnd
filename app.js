@@ -1,49 +1,22 @@
 const express = require('express');
-const mysql = require('mysql');
+// const mysql = require(`mysql-await`);
 const path = require('path');
 const logger = require('./middleware/logger');
+const routes = require('./routes/index');
+const helpers = require('./helpers');
+const errorHandlers = require('./handlers/errorHandlers');
+
+// create our Express app
 const app = express();
 
 const port = 7000;
 
-// create connection to database
-// the mysql.createConnection function takes in a configuration object which contains host, user, password and the database name.
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'admin',
-  password: 'password',
-  port: '52000',
-  database: 'medicalApp',
-  multipleStatements: true
-});
+// view engine setup
+app.set('views', path.join(__dirname, 'views')); // this is the folder where we keep our pug files
+app.set('view engine', 'pug'); // we use the engine pug, mustache or EJS work great too
 
-// connect to database
-db.connect((err) => {
-  if (err) {
-    throw err;
-  }
-  console.log('Connected to database');
-});
-global.db = db;
-
-// create Pool of connections
-const dbPool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'admin',
-  password: 'password',
-  port: '52000',
-  database: 'medicalApp',
-  dateStrings: true,
-  multipleStatements: true
-});
-global.dbPool = dbPool;
-
-// Init middleware
-// app.use(logger);
-
-// set express to use this port
-app.set('port', process.env.port || port);
+// serves up static files from the public folder. Anything in public/ will just be served up as the file it is
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
@@ -52,13 +25,43 @@ app.use(express.urlencoded({
   extended: false
 }));
 
+// set express to use this port
+app.set('port', process.env.port || port);
+
+// pass variables to our templates + all requests
+app.use((req, res, next) => {
+  res.locals.h = helpers;
+  res.locals.currentPath = req.path;
+  next();
+});
+
 // routes for the app
-// Doctors API Routes
-app.use('/api/doctors', require('./routes/api/doctors'));
-// Polyclinics API Routes
-app.use('/api/polyclinics', require('./routes/api/polyclinics'));
-// Medical Offices API Routes
-app.use('/api/offices', require('./routes/api/offices'));
+app.use('/', routes);
+// Doctors Routes
+app.use('/medici', require('./routes/medici'));
+// Polyclinics Routes
+app.use('/policlinici', require('./routes/policlinici'));
+// Users Routes
+app.use('/utilizatori', require('./routes/utilizatori'));
+// Pacients Routes
+app.use('/pacienti', require('./routes/pacienti'));
+// Programari Routes
+app.use('/programari', require('./routes/programari'));
+
+// If that above routes didnt work, we 404 them and forward to error handler
+app.use(errorHandlers.notFound);
+
+// One of our error handlers will see if these errors are just validation errors
+app.use(errorHandlers.flashValidationErrors);
+
+// Otherwise this was a really bad error we didn't expect! Shoot eh
+if (app.get('env') === 'development') {
+  /* Development Error Handler - Prints stack trace */
+  app.use(errorHandlers.developmentErrors);
+}
+
+// production error handler
+app.use(errorHandlers.productionErrors);
 
 // set the app to listen on the port
 app.listen(port, () => {

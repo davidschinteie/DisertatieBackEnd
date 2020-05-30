@@ -1,46 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const policliniciController = require('../controllers/policliniciController');
 
 function isEmptyObject(obj) {
   return !Object.keys(obj).length;
 }
 
 // Vizualizarea tuturor policlinicilor
-router.get('/', (req, res) => {
-  // query database to get all the polyclinics
-  let query = "select id_policlinica, Policlinica.denumire, email, telefon, adresa, link_google_map, Zona.denumire as zona, date_format(data_deschiderii, '%Y-%m-%d') as data_deschiderii, chirie_lunara from Policlinica, Zona where Policlinica.zona_id = Zona.id_zona ORDER BY id_policlinica ASC";
+router.get('/', policliniciController.getAllPoliclinici);
 
-  // execute query
-  db.query(query, (err, result) => {
-    if (err) {
-      throw err;
-    }
-    res.json(result);
-  });
-});
-
-// Vizualizarea unei singure policlinic
-router.get('/:id', (req, res) => {
-  let clinicId = req.params.id;
-  // query database to get the polyclinic
-  let query = `select id_policlinica, Policlinica.denumire, email, telefon, adresa, link_google_map, Zona.denumire as zona, date_format(data_deschiderii, '%Y-%m-%d') as data_deschiderii, chirie_lunara from Policlinica, Zona where Policlinica.zona_id = Zona.id_zona and id_policlinica = ${clinicId}`;
-
-  // execute query
-  db.query(query, (err, result) => {
-    if (err) {
-      throw err;
-    }
-
-    if (result.length) {
-      res.json(result);
-    } else {
-      res.status(400).json({
-        message: `Policlinica cu id-ul ${clinicId} nu a fost gasita in baza de date.`
-      });
-    }
-
-  });
-});
+// Vizualizarea unei singure policlinici
+router.get('/:id', policliniciController.getSinglePoliclinica);
 
 // Adaugarea unei noi policlinic
 router.post('/', (req, res) => {

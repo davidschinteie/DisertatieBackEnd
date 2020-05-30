@@ -10,7 +10,14 @@ function isEmptyObject(obj) {
 // Vizualizarea tuturor cabinetelor
 router.get('/', (req, res) => {
   // query database to get all the polyclinics
-  let query = "select Cabinet.id_cabinet, Cabinet.denumire as Cabinet, SpecialitateMedicala.specialitate, Policlinica.denumire as Policlinica from Cabinet inner join SpecialitateMedicala on Cabinet.specialitate_id = SpecialitateMedicala.id_specialitate inner join Policlinica on Cabinet.policlinica_id = Policlinica.id_policlinica;";
+  let query = `select Cabinet.id_cabinet, 
+    Cabinet.denumire as Cabinet, 
+    SpecialitateMedicala.specialitate, 
+    Policlinica.denumire as Policlinica from Cabinet 
+  inner join SpecialitateMedicala 
+    on Cabinet.specialitate_id = SpecialitateMedicala.id_specialitate 
+  inner join Policlinica 
+    on Cabinet.policlinica_id = Policlinica.id_policlinica;`;
 
   // execute query
   db.query(query, (err, result) => {
@@ -25,7 +32,10 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   let officeId = req.params.id;
   // query database to get the polyclinic
-  let query = `select Cabinet.id_cabinet, Cabinet.denumire as Cabinet, SpecialitateMedicala.specialitate, Policlinica.denumire as Policlinica 
+  let query = `select Cabinet.id_cabinet, 
+    Cabinet.denumire as Cabinet, 
+    SpecialitateMedicala.specialitate, 
+    Policlinica.denumire as Policlinica 
   from Cabinet 
   inner join SpecialitateMedicala 
     on Cabinet.specialitate_id = SpecialitateMedicala.id_specialitate 
@@ -67,7 +77,12 @@ router.post('/', (req, res) => {
     // @todo: validare date inainte de a face query-uri catre db cu ele .. 
   }
 
-  let query = `SELECT id_specialitate FROM SpecialitateMedicala WHERE specialitate = ?;SELECT id_policlinica FROM Policlinica WHERE denumire = ?;`;
+  let query = `SELECT id_specialitate 
+  FROM SpecialitateMedicala 
+  WHERE specialitate = ?;
+  SELECT id_policlinica 
+  FROM Policlinica 
+  WHERE denumire = ?;`;
 
   db.query(query, [`${specialitate}`, `${policlinica}`], (err, results) => {
     if (err) {
@@ -183,7 +198,7 @@ router.put('/:id', (req, res) => {
       });
     } else {
       res.status(400).json({
-        message: `Cabinetul cu id-ul ${clinicId} nu a fost gasita in baza de date.`
+        message: `Cabinetul cu id-ul ${officeId} nu a fost gasit in baza de date.`
       });
     }
   });

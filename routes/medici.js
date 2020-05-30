@@ -1,46 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const mediciController = require('../controllers/mediciController');
 
 function isEmptyObject(obj) {
   return !Object.keys(obj).length;
 }
 
 // Vizualizarea tuturor medicilor
-router.get('/', (req, res) => {
-  // query database to get all the doctors
-  let query = "SELECT id_medic, nume, prenume, GradProfesional.grad_profesional, SpecialitateMedicala.specialitate, email, telefon, salariu, date_format(data_angajarii, '%Y-%m-%d') as data_angajarii FROM Medic, SpecialitateMedicala, GradProfesional where Medic.specialitate_id = SpecialitateMedicala.id_specialitate and Medic.grad_profesional_id = GradProfesional.id_grad ORDER BY id_medic ASC";
-
-  // execute query
-  db.query(query, (err, result) => {
-    if (err) {
-      throw err;
-    }
-    res.json(result);
-  });
-});
+router.get('/', mediciController.getAllMedici);
 
 // Vizualizarea unui singur medic
-router.get('/:id', (req, res) => {
-  let doctorId = req.params.id;
-  // query database to get the doctor
-  let query = `SELECT id_medic, nume, prenume, GradProfesional.grad_profesional, SpecialitateMedicala.specialitate, email, telefon, salariu, date_format(data_angajarii, '%Y-%m-%d') as data_angajarii FROM Medic, SpecialitateMedicala, GradProfesional where Medic.specialitate_id = SpecialitateMedicala.id_specialitate and Medic.grad_profesional_id = GradProfesional.id_grad and id_medic = ${doctorId}`;
-
-  // execute query
-  db.query(query, (err, result) => {
-    if (err) {
-      throw err;
-    }
-
-    if (result.length) {
-      res.json(result);
-    } else {
-      res.status(400).json({
-        message: `Medicul cu id-ul ${doctorId} nu a fost gasit in baza de date.`
-      });
-    }
-
-  });
-});
+router.get('/:id', mediciController.getSingleMedic);
 
 // Adaugarea unui nou medic
 router.post('/', (req, res) => {

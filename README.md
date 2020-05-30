@@ -14,14 +14,15 @@ Aplicatie Web de gestionare a programilor efectuate in cadrul unei clinici medic
     
 # Feature-uri de implementat (MVP):
   - Crearea unui profil de Pacient: Userul sa se poata autentifica in aplicatie si sa-si poata face o programare in functie de disponibilitatea medicilor si a cabinetelor. (o vizualizarea a unui calendar cu datele disponibile si orele la care poate sa-si faca programarea)
-- Crearea unui profil de Medic: Medicul sa poata sa vizualizeze calendarul cu programarile facute pana acum.
-- Crearea unui profil de Admin: Adminul care sa poata sa aiba acces la toate datele si sa poata sa faca request-uri cu privire la gradul de ocupare a clinicii, medicii cei mai 'ceruti', pacientii 'fideli' etc.
+  - Crearea unui profil de Medic: Medicul sa poata sa vizualizeze calendarul cu programarile facute pana acum.
+  - Crearea unui profil de Admin: Adminul care sa poata sa aiba acces la toate datele si sa poata sa faca request-uri cu privire la gradul de ocupare a clinicii, medicii cei mai 'ceruti', pacientii 'fideli' etc.
 
 # API:
 1. /api/medici: unde vor fi requesturile de creare, vizualizare, editare si stergere a medicilor
-2. /api/pacienti: unde vor fi requesturile de creare, vizualizare, editare si stergere a pacientilor
-3. /api/programari: unde vor fi requesturile de creare, vizualizare, editare si stergere a programarilor
-4. /api/cabinete: unde vor fi requesturile de creare, vizualizare, editare si stergere a cabinetelor
+2. /api/policlinici: unde vor fi requesturile de creare, vizualizare, editare si stergere a policlinicilor
+3. /api/cabinete: unde vor fi requesturile de creare, vizualizare, editare si stergere a cabinetelor
+4. /api/pacienti: unde vor fi requesturile de creare, vizualizare, editare si stergere a pacientilor
+5. /api/programari: unde vor fi requesturile de creare, vizualizare, editare si stergere a programarilor
 
 # ToDos (MVP):
 1. Vizualizarea datelor (cabinete, medici, pacienti, programari etc) din dashboard-ul aplicatiei
@@ -36,4 +37,3 @@ Aplicatie Web de gestionare a programilor efectuate in cadrul unei clinici medic
 2. Logarea Utilizatorului cu ajutorul scanarii cardului medical de pe telefon [openCV with NodeJS](https://www.npmjs.com/package/opencv4nodejs)
 3. Vizualizarea de rapoarte pe baza datelor deja existente cu ajutorul D3.js (charts and other stuff) 
 4. Upload de noi programari din fisiere csv sau excel
-5. Crearea unei noi programari in functie de optiunile disponibile (eventual de afisat intr-un forma vizuala complexa)
