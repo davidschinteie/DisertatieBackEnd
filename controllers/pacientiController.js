@@ -50,7 +50,7 @@ exports.getSinglePacient = async (req, res) => {
   join Donator on Pacient.id_pacient = Donator.id_pacient
   where Pacient.id_pacient = ${pacientId};`;
   let programari_query = `select 
-  Programare.data_programarii, Programare.durata, concat(Utilizator.nume, ' ', Utilizator.prenume) as medic, Cabinet.denumire, Policlinica.id_policlinica as policlinica_link_id, Policlinica.denumire as policlinica,
+  Programare.moment_programare, Programare.durata, concat(Utilizator.nume, ' ', Utilizator.prenume) as medic, Cabinet.denumire, Policlinica.id_policlinica as policlinica_link_id, Policlinica.denumire as policlinica,
   serviciuMedical.denumire_serviciu, serviciuMedical.cost_serviciu,
   discountServMed.procent_discount as discount,
   SpecialitateMedicala.denumire as specialitate

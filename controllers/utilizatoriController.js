@@ -64,7 +64,7 @@ exports.getSingleUtilizator = async (req, res) => {
   join serviciuMedical on Medic.id_specialitate = serviciuMedical.id_specialitate
   where Utilizator.id_utilizator = ${userId};`;
   let medic_programari_query = `select 
-  Programare.data_programarii, Programare.durata, Programare.id_programare as programare_link_id, Cabinet.denumire, Policlinica.id_policlinica as policlinica_link_id, Policlinica.denumire as policlinica
+  Programare.moment_programare, Programare.durata, Programare.id_programare as programare_link_id, Cabinet.denumire, Policlinica.id_policlinica as policlinica_link_id, Policlinica.denumire as policlinica
   from Utilizator
   join Medic on Medic.id_utilizator = Utilizator.id_utilizator
   join Programare on Programare.id_medic = Medic.id_medic
@@ -78,7 +78,7 @@ exports.getSingleUtilizator = async (req, res) => {
   join Donator on Pacient.id_pacient = Donator.id_pacient
   where Utilizator.id_utilizator = ${userId};`;
   let pacient_programari_query = `select 
-  Programare.data_programarii, Programare.durata, Programare.id_programare as programare_link_id, Cabinet.denumire, Policlinica.id_policlinica as policlinica_link_id, Policlinica.denumire as policlinica,
+  Programare.moment_programare, Programare.durata, Programare.id_programare as programare_link_id, Cabinet.denumire, Policlinica.id_policlinica as policlinica_link_id, Policlinica.denumire as policlinica,
   serviciuMedical.denumire_serviciu, serviciuMedical.cost_serviciu,
   discountServMed.procent_discount as discount,
   SpecialitateMedicala.denumire as specialitate

@@ -153,4 +153,4 @@ select
   where Medic.id_medic = 10;
 
 
-
+select * from Programare;
