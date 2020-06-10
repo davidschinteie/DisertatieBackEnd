@@ -1,0 +1,89 @@
+mixin pacientForm(pacient = {})
+  // Title
+  h1.text-3xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-4 #{title}
+  // Body
+  //- pre= h.dump(locals.pacient)
+  form.w-full(action=currentPath method='POST')
+    input(type="hidden", name="id_utilizator", value=pacient.id_utilizator)
+    .flex.flex-wrap.-mx-3.mb-6
+      .w-full.px-3.mb-6(class='md:w-1/2 md:mb-0')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-first-name')
+          | Nume
+        input#grid-first-name.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.rounded.py-3.px-4.mb-3.leading-tight(class='focus:outline-none focus:bg-white' type='text' placeholder='Jane' name='nume' value=pacient.nume)
+        //- p.text-red-500.text-xs.italic Please fill out this field.
+      .w-full.px-3(class='md:w-1/2')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-last-name')
+          | Prenume
+        input#grid-last-name.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='text' placeholder='Doe' name="prenume" value=pacient.prenume)
+    .flex.flex-wrap.-mx-3.mb-6
+      .w-full.px-3(class='md:w-1/2')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-user-name')
+          | Nume Utilizator
+        input#grid-user-name.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='text' placeholder='nume_prenume', name="nume_utilizator" value=pacient.nume_utilizator)
+      .w-full.px-3(class='md:w-1/2')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-password')
+          | Parola
+        input#grid-password.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.mb-3.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='password' placeholder='******************' name="parola")
+        p.text-gray-600.text-xs.italic Parola trebuie sa fie de minim 8 caractere
+    .flex.flex-wrap.-mx-3.mb-6
+      .w-full.px-3(class='md:w-1/2')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-email')
+          | Email
+        input#grid-email.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='text' placeholder='adresa_de@email.com' name="email" value=pacient.email)
+      .w-full.px-3.mb-6(class='md:w-1/2 md:mb-0')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-phone')
+          | Telefon
+        input#grid-phone.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='text' placeholder='07xx-xxx-xxx' name="telefon" value=pacient.telefon)
+    .flex.flex-wrap.-mx-3.mb-6
+      .w-full.px-3.mb-6(class='md:w-1/2 md:mb-0')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-asigurare')
+          | Asigurare Medicala
+        .relative
+          select#grid-asigurare.block.appearance-none.w-full.bg-gray-200.border.border-gray-200.text-gray-700.py-3.px-4.pr-8.rounded.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' name="asigurare" value=pacient.asigurare)
+            each asigurare in asigurari
+              if asigurare.denumire == pacient.asigurare
+                option(value=asigurare.id_asigurare selected)=asigurare.denumire
+              else  
+                option(value=asigurare.id_asigurare)=asigurare.denumire
+          .pointer-events-none.absolute.inset-y-0.right-0.flex.items-center.px-2.text-gray-700
+            svg.fill-current.h-4.w-4(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 20 20')
+              path(d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z')
+      .w-full.px-3.mb-6(class='md:w-1/2 md:mb-0')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-zona')
+          | Zona
+        .relative
+          select#grid-zona.block.appearance-none.w-full.bg-gray-200.border.border-gray-200.text-gray-700.py-3.px-4.pr-8.rounded.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' name="zona")
+            each zona in zone
+              if zona.id_zona == pacient.id_zona
+                option(value=zona.id_zona selected)=zona.denumire
+              else  
+                option(value=zona.id_zona)=zona.denumire
+          .pointer-events-none.absolute.inset-y-0.right-0.flex.items-center.px-2.text-gray-700
+            svg.fill-current.h-4.w-4(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 20 20')
+              path(d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z')
+    .flex.flex-wrap.-mx-3.mb-6
+      .w-full.px-3.mb-6(class='md:w-1/2 md:mb-0')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-data_nasterii')
+          | Data nasterii
+        .relative
+          input#grid-data_nasterii.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type="date" name="data_nasterii" value=h.moment(pacient.data_nasterii).format('YYYY-MM-DD'))
+    h3.text-3xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-4 
+      i.fas.fa-hand-heart.mr-2
+      | Completare date Donator
+    .flex.flex-wrap.-mx-3.mb-6
+      .w-full.px-3.mb-6(class='md:w-1/2 md:mb-0')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-grupa_sanguina')
+          | Grupa Sanguina
+        .relative.blood_selector
+          - let grupe_labels = {'0_I pozitiv': '0+', '0_I negativ': '0-', 'A_II pozitiv': 'A+', 'A_II negativ': 'A-', 'B_III pozitiv': 'B+', 'B_III negativ': 'B-', 'AB_IV pozitiv': 'AB+', 'AB_IV negativ': 'AB-'}
+          each grupa in grupe
+            div.flex
+              input(type="radio" id=`grupa_${grupa.grupa_sanguina.replace(/\s+/g, '')}` value=grupa.grupa_sanguina name="grupa_sanguina" checked=(grupa.grupa_sanguina == pacient.grupa_sanguina ? true:false))
+              label(for=`grupa_${grupa.grupa_sanguina.replace(/\s+/g, '')}`)=grupe_labels[grupa.grupa_sanguina]
+      .w-full.px-3.mb-6(class='md:w-1/2 md:mb-0')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-data_ultimei_donari')
+          | Data ultimei donari
+        .relative
+          input#grid-data_ultimei_donari.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type="date" name="data_ultimei_donari" value=h.moment(pacient.data_ultimei_donari).format('YYYY-MM-DD'))
+    .flex.flex-wrap.-mx-3.mb-2.px-3.justify-end
+      button.bg-indigo-500.text-white.font-bold.py-2.px-4.rounded(class='hover:bg-indigo-700 focus:outline-none focus:shadow-outline', type='submit') Salveaza

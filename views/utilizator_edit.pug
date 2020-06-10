@@ -1,0 +1,7 @@
+extends layout
+
+include mixins/_utilizatorForm
+
+block content
+  //- pre= h.dump(locals.pacient)
+  +utilizatorForm(utilizator)

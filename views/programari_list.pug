@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  .flex.justify-between.items-center
+    // Title
+    h1.flex.items-center.font-sans.font-bold.break-normal.text-indigo-500.px-2.py-8.text-xl(class='md:text-2xl') Programari (#{Object.keys(programari).length})
+  // Card
+  #recipients.p-6.mt-6.rounded.shadow.bg-white(class='lg:mt-0')
+    .dataTables_wrapper
+      table#example.stripe.hover.dataTable(style='width:100%; padding-top: 1em;  padding-bottom: 1em;')
+        thead
+          tr
+            th(data-priority='1') Serviciu medical
+            th(data-priority='2') Specialitate
+            th(data-priority='3') Moment Programare
+            th(data-priority='4') Status programare
+            th(data-priority='5') Cabinet
+            th(data-priority='6') Policlinica
+            th(data-priority='7') Link Programare
+        tbody
+          each programare in programari
+            tr
+              td= programare.serviciu_medical
+              td= programare.specialitate_medicala
+              td #{h.moment(programare.moment_programare).format('Do MMMM YYYY, HH:mm')}
+              td= programare.status_programare
+              td= programare.Cabinet
+              td 
+                a(href=`/policlinici/${programare.link_policlinica_id}` class="font-bold")=programare.Policlinica
+              td 
+                a(href=`/programari/${programare.link_programare_id}` class="font-bold") Vezi Programare
+

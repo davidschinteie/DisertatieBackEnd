@@ -1,0 +1,77 @@
+extends layout
+
+block content
+  //- pre= h.dump(locals.utilizator)
+  section.relative.py-16
+    .container.mx-auto
+      .relative.flex.flex-col.min-w-0.break-words.bg-white.w-full.mb-6.shadow-2xl.rounded-lg
+        .px-6
+          .flex.flex-wrap.justify-center.relative
+            .w-full.px-4.flex.justify-center(class='lg:w-3/12')
+              .relative
+                i.fal.fa-user.fa-fw.text-8xl.my-8
+            .flex.absolute.top-center.right-0.justify-center.flex-col.transform(class='-translate-y-1/2')
+              a.bg-transparent.border.border-gray-500.text-gray-500.font-bold.py-2.px-4.mb-3.rounded-full(class='hover:border-gray-800 hover:text-gray-800' href=`${currentPath}/edit`) 
+                i.far.fa-pen.pr-2 
+                | Editeaza Utilizator
+              button.modal-open.bg-transparent.border.border-gray-500.text-gray-500.font-bold.py-2.px-4.rounded-full(class='hover:border-gray-800 hover:text-gray-800' href='#/') 
+                i.fad.fa-trash.pr-2 
+                | Sterge Utilizator
+          .text-center.mt-12
+            h3.text-4xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-2
+              | #{utilizator[0].nume}
+            .mb-2.text-gray-700.mt-10
+              i.fas.fa-notes-medical.mr-2.text-lg.text-gray-500
+              | Nume Utilizator:  #{utilizator[0].nume_utilizator}
+            .mb-2.text-gray-700
+              i.fas.fa-map-marker-alt.mr-2.text-lg.text-gray-500
+              | Rol: #{utilizator[0].rol}
+            .mb-2.text-gray-700
+              i.fas.fa-envelope.mr-2.text-lg.text-gray-500
+              | #{utilizator[0].email}
+            .mb-2.text-gray-700
+              i.fas.fa-phone-alt.mr-2.text-lg.text-gray-500
+              | #{utilizator[0].telefon}
+            .mb-2.text-gray-700
+              i.fas.fa-map-marker-alt.mr-2.text-lg.text-gray-500
+              | Numar autentificari: #{utilizator[0].numar_autentificari}
+            .mb-2.text-gray-700
+              i.fas.fa-map-marker-alt.mr-2.text-lg.text-gray-500
+              | Utilizator creat: #{h.moment(utilizator[0].creat_la).format('Do MMMM YYYY')}
+            .mb-2.text-gray-700
+              i.fas.fa-map-marker-alt.mr-2.text-lg.text-gray-500
+              | Utilizator actualizat: #{h.moment(utilizator[0].actualizat_la).format('Do MMMM YYYY')}
+            .mb-2.text-gray-700
+              i.fas.fa-map-marker-alt.mr-2.text-lg.text-gray-500
+              | Invitatie trimisa: #{h.moment(utilizator[0].invitatie_trimisa_la).format('Do MMMM YYYY')}
+            .mb-2.text-gray-700
+              i.fas.fa-map-marker-alt.mr-2.text-lg.text-gray-500
+              | Invitatie acceptata: #{h.moment(utilizator[0].invitatie_acceptata_la).format('Do MMMM YYYY')}
+          .mt-4.py-10.border-t.border-gray-300.text-center
+            a.bg-transparent.border.border-gray-500.text-gray-500.font-bold.py-2.px-4.mb-3.rounded-full(class='hover:border-gray-800 hover:text-gray-800' href=`/${utilizator[0].rol}i/${locals.profil_id}`) 
+                i.fas.fa-eye.pr-2 
+                | Vizualizeaza #{utilizator[0].rol}
+            a.bg-transparent.border.border-gray-500.text-gray-500.font-bold.py-2.px-4.mb-3.ml-3.rounded-full(class='hover:border-gray-800 hover:text-gray-800' href=`/${utilizator[0].rol}i/${locals.profil_id}/edit`) 
+                i.far.fa-pen.pr-2 
+                | Editeaza #{utilizator[0].rol}
+
+block modal
+  .modal.opacity-0.pointer-events-none.fixed.w-full.h-full.top-0.left-0.flex.items-center.justify-center
+    .modal-overlay.absolute.w-full.h-full.bg-white.opacity-95
+    .modal-container.fixed.w-full.h-full.z-50.overflow-y-auto.flex
+      .modal-content.container.mx-auto.h-auto.text-left.p-4.max-w-2xl.m-auto.flex.items-center.justify-center.flex-col.bg-white.shadow-2xl
+        .modal-close.cursor-pointer.self-end.mr-4.z-50.text-indigo-500.px-2.py-2.text-2xl
+          i.far.fa-times-circle
+        // Title
+        .flex.justify-between.items-center.pb-3
+          p.text-2xl.font-bold.text-gray-800 Esti sigur?
+        // Body
+        p.text-gray-500.text-center Utilizatorul #{utilizator[0].nume_utilizator} va fi sters din baza de date. Aceasta actiune nu poate fi anulata.
+        // Footer
+        form.flex.justify-end.pt-2(action=`/utilizatori/${utilizator[0].id_utilizator}/delete` method='POST')
+          input(type="hidden", name="nume_utilizator", value=utilizator[0].nume_utilizator)
+          input(type="hidden", name="rol_utilizator", value=utilizator[0].rol)
+          a.modal-close.px-4.bg-transparent.p-3.rounded-lg.border.border-gray-500.text-gray-500.mr-2(class='hover:bg-gray-800 hover:text-white') Cancel
+          button.px-4.bg-red-500.p-3.rounded-lg.text-white(class='hover:bg-red-600') Delete
+  script(src='/javascripts/modules/modal.js')
+  

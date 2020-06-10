@@ -1,0 +1,117 @@
+extends layout
+
+block content
+  //- pre= h.dump(locals.programari_medic)
+  section.relative.py-16
+    .container.mx-auto
+      .relative.flex.flex-col.min-w-0.break-words.bg-white.w-full.mb-6.shadow-2xl.rounded-lg
+        .px-6
+          .flex.flex-wrap.justify-center.relative
+            .w-full.px-4.flex.justify-center(class='lg:w-3/12')
+              .relative
+                i.fal.fa-user-md.fa-fw.text-8xl.my-8
+            .flex.absolute.top-center.right-0.justify-center.flex-col.transform(class='-translate-y-1/2')
+              a.bg-transparent.border.border-gray-500.text-gray-500.font-bold.py-2.px-4.mb-3.rounded-full(class='hover:border-gray-800 hover:text-gray-800' href=`${currentPath}/programare`) 
+                i.fal.fa-calendar-check.pr-2 
+                | Solicita programare
+              a.bg-transparent.border.border-gray-500.text-gray-500.font-bold.py-2.px-4.mb-3.rounded-full(class='hover:border-gray-800 hover:text-gray-800' href=`${currentPath}/edit`) 
+                i.far.fa-pen.pr-2 
+                | Editeaza Medic
+              button.modal-open.bg-transparent.border.border-gray-500.text-gray-500.font-bold.py-2.px-4.rounded-full(class='hover:border-gray-800 hover:text-gray-800' href='#/') 
+                i.fad.fa-trash.pr-2 
+                | Sterge Medic
+          .text-center.mt-12
+            h3.text-4xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-2
+              | #{medic[0].nume}
+            .mb-2.text-gray-700.mt-10
+              i.fas.fa-briefcase.mr-2.text-lg.text-gray-500
+              | Medic #{medic[0].grad_profesional}
+            .mb-2.text-gray-700
+              i.fas.fa-university.mr-2.text-lg.text-gray-500
+              | #{medic[0].specialitate}
+            .mb-2.text-gray-700
+              i.fas.fa-envelope.mr-2.text-lg.text-gray-500
+              | #{medic[0].email}
+            .mb-2.text-gray-700
+              i.fas.fa-phone-alt.mr-2.text-lg.text-gray-500
+              | #{medic[0].telefon}
+          if !h.isEmptyObject(locals.servicii_medicale)
+            .mt-10.py-10.border-t.border-gray-300.text-center
+              h3.text-3xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-4 Servicii medicale
+              .flex.flex-wrap.justify-center
+                .w-full.grid.grid-cols-3.gap-4.mb-6(class='lg:w-9/12')
+                  each serviciu in servicii_medicale
+                    .bg-white.rounded-lg.p-4.shadow
+                      div
+                        p.text-sm.font-semibold #{serviciu.denumire_serviciu}
+                        p.text-sm #{serviciu.cost_serviciu} RON
+                        p.text-sm #{serviciu.durata_minima.slice(0, -3)} h - #{serviciu.durata_maxima.slice(0, -3)} h
+          if !h.isEmptyObject(locals.orar)
+            .mt-4.py-10.border-t.border-gray-300.text-center
+              h3.text-3xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-4 Orar Medic
+              .flex.flex-wrap.justify-center
+                .w-full.grid.grid-cols-3.gap-4.mb-6(class='lg:w-9/12')
+                  each program in orar
+                    .bg-white.rounded-lg.p-4.shadow
+                      div
+                        span.text-gray-900.relative.inline-block.date.uppercase.font-medium.tracking-widest.text-left #{program.ziua_saptamanii}
+                        .flex.mb-2
+                          div(class='w-3/12')
+                            span.text-sm.text-gray-600.block #{program.ora_inceput.slice(0, -3)}
+                            span.text-sm.text-gray-600.block #{program.ora_sfarsit.slice(0, -3)}
+                          div(class='w-1/12')
+                            span.bg-blue-400.h-2.w-2.rounded-full.block.mt-2
+                          div(class='w-8/12')
+                            span.text-sm.font-semibold.block #{program.cabinet}
+                            span.text-sm #{program.policlinica}
+          if locals.programari_medic && !h.isEmptyObject(locals.programari_medic)
+            .mt-4.py-10.border-t.border-gray-300.text-center
+              h3.text-3xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-4 Programari Medic
+              .dataTables_wrapper
+                table#example.stripe.hover.dataTable.programariTable(style='width:100%; padding-top: 1em;  padding-bottom: 1em;')
+                  thead
+                    tr
+                      th(data-priority='1') Serviciu medical
+                      th(data-priority='2') Ziua
+                      th(data-priority='3') Moment
+                      th(data-priority='4') Status
+                      th(data-priority='5') Cabinet
+                      th(data-priority='6') Policlinica
+                      th(data-priority='7') Link
+                  tbody
+                  each programare in programari_medic
+                    tr
+                      td= programare.denumire_serviciu
+                      td #{h.moment(programare.moment_programare).format('Do MMMM')}
+                      td
+                        - let a = programare.durata.split(':')
+                        - let minutes = (+a[0]) * 60 + (+a[1])
+                        i.fal.fa-clock.mr-2
+                        | #{h.moment(programare.moment_programare).format('HH:mm')} - #{h.moment(programare.moment_programare).add(minutes, 'minutes').format('HH:mm')}
+                      td= programare.status_programare
+                      td= programare.cabinet
+                      td 
+                        a(href=`/policlinici/${programare.policlinica_link_id}` class="font-bold")=programare.policlinica
+                      td 
+                        a(href=`/programari/${programare.programare_link_id}` class="font-bold") Vezi Programare
+  
+block modal
+  .modal.opacity-0.pointer-events-none.fixed.w-full.h-full.top-0.left-0.flex.items-center.justify-center
+    .modal-overlay.absolute.w-full.h-full.bg-white.opacity-95
+    .modal-container.fixed.w-full.h-full.z-50.overflow-y-auto.flex
+      .modal-content.container.mx-auto.h-auto.text-left.p-4.max-w-2xl.m-auto.flex.items-center.justify-center.flex-col.bg-white.shadow-2xl
+        .modal-close.cursor-pointer.self-end.mr-4.z-50.text-indigo-500.px-2.py-2.text-2xl
+          i.far.fa-times-circle
+        // Title
+        .flex.justify-between.items-center.pb-3
+          p.text-2xl.font-bold.text-gray-800 Esti sigur?
+        // Body
+        p.text-gray-500.text-center Medicul #{medic[0].nume} va fi sters din baza de date. Aceasta actiune nu poate fi anulata.
+        // Footer
+        form.flex.justify-end.pt-2(action=`/medici/${medic[0].id_medic}/delete` method='POST')
+          input(type="hidden", name="id_utilizator", value=medic[0].id_utilizator)
+          input(type="hidden", name="nume_medic", value=medic[0].nume)
+          a.modal-close.px-4.bg-transparent.p-3.rounded-lg.border.border-gray-500.text-gray-500.mr-2(class='hover:bg-gray-800 hover:text-white') Cancel
+          button.px-4.bg-red-500.p-3.rounded-lg.text-white(class='hover:bg-red-600') Delete
+  script(src='/javascripts/modules/modal.js')
+  

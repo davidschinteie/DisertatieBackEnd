@@ -1,0 +1,203 @@
+.container {
+  margin: 0 auto;
+  width: 100%;
+  position: relative; }
+  @media screen and (min-width: 768px) {
+    .container {
+      padding-left: 0;
+      padding-right: 0;
+      max-width: 658px; } }
+  @media screen and (min-width: 1024px) {
+    .container {
+      max-width: 920px; } }
+  @media screen and (min-width: 1280px) {
+    .container {
+      max-width: 1110px; } }
+  @media screen and (min-width: 1680px) {
+    .container {
+      max-width: 1280px; } }
+
+.modal {
+  transition: opacity 0.25s ease; }
+
+body.modal-active {
+  overflow-x: hidden;
+  overflow-y: visible !important; }
+
+.opacity-95 {
+  opacity: .95; }
+
+/*Overrides for Tailwind CSS */
+/*Form fields*/
+.dataTables_wrapper select,
+.dataTables_wrapper .dataTables_filter input {
+  color: #4a5568;
+  /*text-gray-700*/
+  padding-left: 1rem;
+  /*pl-4*/
+  padding-right: 1rem;
+  /*pl-4*/
+  padding-top: .5rem;
+  /*pl-2*/
+  padding-bottom: .5rem;
+  /*pl-2*/
+  line-height: 1.25;
+  /*leading-tight*/
+  border-width: 2px;
+  /*border-2*/
+  border-radius: .25rem;
+  border-color: #edf2f7;
+  /*border-gray-200*/
+  background-color: #edf2f7;
+  /*bg-gray-200*/ }
+
+/*Row Hover*/
+table.dataTable.hover tbody tr:hover,
+table.dataTable.display tbody tr:hover {
+  background-color: #ebf4ff;
+  /*bg-indigo-100*/ }
+
+/*Pagination Buttons*/
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  font-weight: 700;
+  /*font-bold*/
+  border-radius: .25rem;
+  /*rounded*/
+  border: 1px solid transparent;
+  /*border border-transparent*/ }
+
+/*Pagination Buttons - Current selected */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  color: #fff !important;
+  /*text-white*/
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  /*shadow*/
+  font-weight: 700;
+  /*font-bold*/
+  border-radius: .25rem;
+  /*rounded*/
+  background: #667eea !important;
+  /*bg-indigo-500*/
+  border: 1px solid transparent;
+  /*border border-transparent*/ }
+
+/*Pagination Buttons - Hover */
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  color: #fff !important;
+  /*text-white*/
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  /*shadow*/
+  font-weight: 700;
+  /*font-bold*/
+  border-radius: .25rem;
+  /*rounded*/
+  background: #667eea !important;
+  /*bg-indigo-500*/
+  border: 1px solid transparent;
+  /*border border-transparent*/ }
+
+/*Add padding to bottom border */
+table.dataTable {
+  border-bottom: 1px solid #e2e8f0;
+  /*border-b-1 border-gray-300*/
+  margin-top: 0.75em;
+  margin-bottom: 0.75em; }
+
+table.dataTable thead th {
+  text-align: left;
+  padding-right: 20px;
+  padding-bottom: 16px; }
+  table.dataTable thead th .th-wrapper {
+    white-space: nowrap; }
+
+table.dataTable tbody tr {
+  line-height: 36px; }
+  table.dataTable tbody tr:nth-child(2n+1) {
+    background-color: #f9f9f9; }
+  table.dataTable tbody tr .td-wrapper {
+    white-space: nowrap; }
+
+table.dataTable.leftAlignTable td,
+table.dataTable.leftAlignTable th {
+  text-align: left;
+  padding-left: 10px; }
+
+/*Change colour of responsive icon*/
+table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
+table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
+  background-color: #667eea !important;
+  /*bg-indigo-500*/ }
+
+.blood_selector {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: 1fr;
+  grid-gap: 5px;
+  z-index: 2; }
+  .blood_selector input {
+    position: absolute;
+    left: -99999px; }
+  .blood_selector div {
+    position: relative; }
+    .blood_selector div:before {
+      content: ' ';
+      display: block;
+      width: 100%;
+      padding-top: 100%; }
+    .blood_selector div label {
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff;
+      border: 1px solid #b51e23;
+      border-radius: 25%;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      bottom: 0px;
+      right: 0px; }
+  .blood_selector label:hover {
+    border: 1px solid #1da1f2;
+    cursor: pointer; }
+  .blood_selector input:checked + label {
+    border: 2px solid #b51e23 !important;
+    font-weight: bold; }
+
+.orar_medic,
+.output_serviciu {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 4fr;
+  grid-gap: 5px;
+  z-index: 2; }
+  .orar_medic input,
+  .output_serviciu input {
+    position: absolute;
+    left: -99999px; }
+  .orar_medic div,
+  .output_serviciu div {
+    position: relative; }
+    .orar_medic div label,
+    .output_serviciu div label {
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff;
+      border: 2px solid #1da1f2 !important;
+      font-weight: bold;
+      border-radius: 25%;
+      width: 100%; }
+      .orar_medic div label > div,
+      .output_serviciu div label > div {
+        width: 100%; }
+  .orar_medic label:hover,
+  .output_serviciu label:hover {
+    border: 2px solid #1da1f2;
+    cursor: pointer; }
+  .orar_medic input:checked + label,
+  .output_serviciu input:checked + label {
+    border: 2px solid #1da1f2 !important;
+    font-weight: bold; }

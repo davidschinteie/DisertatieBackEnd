@@ -1,0 +1,7 @@
+extends layout
+
+include mixins/_pacientForm
+
+block content
+  //- pre= h.dump(locals.pacient)
+  +pacientForm(pacient)

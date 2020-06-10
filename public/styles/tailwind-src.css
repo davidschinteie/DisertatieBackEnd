@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.flash--success {
+  @apply bg-green-200;
+  @apply text-green-900;
+}
+
+.flash--error {
+  @apply bg-red-200;
+  @apply text-red-900;
+}

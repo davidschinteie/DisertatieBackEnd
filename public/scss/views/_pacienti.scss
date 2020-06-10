@@ -1,0 +1,49 @@
+.blood_selector {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: 1fr;
+  grid-gap: 5px;
+  z-index: 2;
+
+  input {
+    position: absolute;
+    left: -99999px;
+  }
+
+  div {
+    position: relative;
+
+    &:before {
+      content: ' ';
+      display: block;
+      width: 100%;
+      padding-top: 100%;
+    }
+
+    label {
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff;
+      border: 1px solid #b51e23;
+      border-radius: 25%;
+
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      bottom: 0px;
+      right: 0px;
+    }
+  }
+
+  label:hover {
+    border: 1px solid #1da1f2;
+    cursor: pointer;
+  }
+
+  input:checked+label {
+    border: 2px solid #b51e23 !important;
+    font-weight: bold;
+  }
+}

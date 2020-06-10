@@ -1,0 +1,10 @@
+extends layout
+
+include mixins/_programareForm
+
+block content
+  // Title
+  h1.text-3xl.font-semibold.leading-normal.text-gray-800.mb-4 #{medic.nume}
+  h2.text-xl.font-semibold.leading-normal.text-gray-600.mb-2 Medic #{medic.grad_profesional} in #{medic.specialitate}
+  // Body
+  +programareForm()

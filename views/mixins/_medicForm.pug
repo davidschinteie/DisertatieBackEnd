@@ -1,0 +1,61 @@
+mixin medicForm(medic = {})
+  // Title
+  h1.text-3xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-4 #{title}
+  // Body
+  form.w-full(action=currentPath method='POST')
+    input(type="hidden", name="id_utilizator", value=medic.id_utilizator)
+    .flex.flex-wrap.-mx-3.mb-6
+      .w-full.px-3.mb-6(class='md:w-1/2 md:mb-0')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-first-name')
+          | Nume
+        input#grid-first-name.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.rounded.py-3.px-4.mb-3.leading-tight(class='focus:outline-none focus:bg-white' type='text' placeholder='Jane' name='nume' value=medic.nume)
+        //- p.text-red-500.text-xs.italic Please fill out this field.
+      .w-full.px-3(class='md:w-1/2')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-last-name')
+          | Prenume
+        input#grid-last-name.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='text' placeholder='Doe' name="prenume" value=medic.prenume)
+    .flex.flex-wrap.-mx-3.mb-6
+      .w-full.px-3(class='md:w-1/2')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-user-name')
+          | Nume Utilizator
+        input#grid-user-name.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='text' placeholder='nume_prenume', name="nume_utilizator" value=medic.nume_utilizator)
+      .w-full.px-3(class='md:w-1/2')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-password')
+          | Parola
+        input#grid-password.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.mb-3.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='password' placeholder='******************' name="parola")
+        p.text-gray-600.text-xs.italic Parola trebuie sa fie de minim 8 caractere
+    .flex.flex-wrap.-mx-3.mb-6
+      .w-full.px-3(class='md:w-1/2')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-email')
+          | Email
+        input#grid-email.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='text' placeholder='adresa_de@email.com' name="email" value=medic.email)
+      .w-full.px-3.mb-6(class='md:w-1/2 md:mb-0')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-phone')
+          | Telefon
+        input#grid-phone.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='text' placeholder='07xx-xxx-xxx' name="telefon" value=medic.telefon)
+    .flex.flex-wrap.-mx-3.mb-6
+      .w-full.px-3.mb-6(class='md:w-1/2 md:mb-0')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-grade')
+          | Grad Profesional
+        .relative
+          select#grid-grade.block.appearance-none.w-full.bg-gray-200.border.border-gray-200.text-gray-700.py-3.px-4.pr-8.rounded.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' name="grad_profesional" value=medic.grad_profesional)
+            each grad in grade_profesionale
+              option(value=grad.id_grad)=grad.denumire
+          .pointer-events-none.absolute.inset-y-0.right-0.flex.items-center.px-2.text-gray-700
+            svg.fill-current.h-4.w-4(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 20 20')
+              path(d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z')
+      .w-full.px-3.mb-6(class='md:w-1/2 md:mb-0')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-specialitate')
+          | Specialitate Medicala
+        .relative
+          select#grid-specialitate.block.appearance-none.w-full.bg-gray-200.border.border-gray-200.text-gray-700.py-3.px-4.pr-8.rounded.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' name="specialitate")
+            each specialitate in specialitati
+              if specialitate.denumire == medic.specialitate
+                option(value=specialitate.id_specialitate selected)=specialitate.denumire
+              else  
+                option(value=specialitate.id_specialitate)=specialitate.denumire
+          .pointer-events-none.absolute.inset-y-0.right-0.flex.items-center.px-2.text-gray-700
+            svg.fill-current.h-4.w-4(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 20 20')
+              path(d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z')
+    .flex.flex-wrap.-mx-3.mb-2.px-3.justify-end
+      button.bg-indigo-500.text-white.font-bold.py-2.px-4.rounded(class='hover:bg-indigo-700 focus:outline-none focus:shadow-outline', type='submit') Salveaza

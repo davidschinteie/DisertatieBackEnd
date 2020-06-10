@@ -2,10 +2,6 @@ const express = require('express');
 const router = express.Router();
 const policliniciController = require('../controllers/policliniciController');
 
-function isEmptyObject(obj) {
-  return !Object.keys(obj).length;
-}
-
 // Vizualizarea tuturor policlinicilor
 router.get('/', policliniciController.getAllPoliclinici);
 

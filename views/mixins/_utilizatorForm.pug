@@ -1,0 +1,38 @@
+mixin utilizatorForm(utilizator = {})
+  // Title
+  h1.text-3xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-4 #{title}
+  // Body
+  //- pre= h.dump(locals.utilizator)
+  form.w-full(action=currentPath method='POST')
+    input(type="hidden", name="id_utilizator", value=utilizator.id_utilizator)
+    .flex.flex-wrap.-mx-3.mb-6
+      .w-full.px-3.mb-6(class='md:w-1/2 md:mb-0')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-first-name')
+          | Nume
+        input#grid-first-name.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.rounded.py-3.px-4.mb-3.leading-tight(class='focus:outline-none focus:bg-white' type='text' placeholder='Jane' name='nume' value=utilizator.nume)
+        //- p.text-red-500.text-xs.italic Please fill out this field.
+      .w-full.px-3(class='md:w-1/2')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-last-name')
+          | Prenume
+        input#grid-last-name.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='text' placeholder='Doe' name="prenume" value=utilizator.prenume)
+    .flex.flex-wrap.-mx-3.mb-6
+      .w-full.px-3(class='md:w-1/2')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-user-name')
+          | Nume Utilizator
+        input#grid-user-name.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='text' placeholder='nume_prenume', name="nume_utilizator" value=utilizator.nume_utilizator)
+      .w-full.px-3(class='md:w-1/2')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-password')
+          | Parola
+        input#grid-password.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.mb-3.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='password' placeholder='******************' name="parola")
+        p.text-gray-600.text-xs.italic Parola trebuie sa fie de minim 8 caractere
+    .flex.flex-wrap.-mx-3.mb-6
+      .w-full.px-3(class='md:w-1/2')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-email')
+          | Email
+        input#grid-email.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='text' placeholder='adresa_de@email.com' name="email" value=utilizator.email)
+      .w-full.px-3.mb-6(class='md:w-1/2 md:mb-0')
+        label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-phone')
+          | Telefon
+        input#grid-phone.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='text' placeholder='07xx-xxx-xxx' name="telefon" value=utilizator.telefon)
+    .flex.flex-wrap.-mx-3.mb-2.px-3.justify-end
+      button.bg-indigo-500.text-white.font-bold.py-2.px-4.rounded(class='hover:bg-indigo-700 focus:outline-none focus:shadow-outline', type='submit') Salveaza

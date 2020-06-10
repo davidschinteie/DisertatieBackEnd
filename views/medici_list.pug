@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  .flex.justify-between.items-center
+    // Title
+    h1.flex.items-center.font-sans.font-bold.break-normal.text-indigo-500.px-2.py-8.text-xl(class='md:text-2xl') Medici (#{Object.keys(medici).length})
+    a.bg-transparent.border.border-gray-500.text-gray-500.font-bold.py-2.px-4.rounded-full(class='hover:border-indigo-500 hover:text-indigo-500' href='/medici/add') 
+      i.fas.fa-plus.pr-2 
+      | Adauga Medic
+  // Card
+  #recipients.p-6.mt-6.rounded.shadow.bg-white(class='lg:mt-0')
+    .dataTables_wrapper
+      table#example.stripe.hover.dataTable(style='width:100%; padding-top: 1em;  padding-bottom: 1em;')
+        thead
+          tr
+            th(data-priority='1') Nume
+            th(data-priority='2') Grad Profesional
+            th(data-priority='3') Specialitate
+            th(data-priority='4') Email
+            th(data-priority='5') Telefon
+        tbody
+          each medic in medici
+            tr
+              td 
+                a(href=`/medici/${medic.id_medic}` class="font-bold")=medic.nume
+              td= medic.grad_profesional
+              td= medic.specialitate
+              td= medic.email
+              td= medic.telefon
+
