@@ -193,26 +193,30 @@ exports.updateUtilizator = async (req, res) => {
     req.flash('errors', errors.map((err) => err.msg));
     res.redirect(`/utilizatori/${utilizatorId}/edit`);
   }
+  bcrypt.hash(parola, 10, async (err, hash) => {
+    let check_duplicate_query = ``,
+      update_utilizator_query = `update Utilizator set nume = '${nume}', prenume = '${prenume}', email = '${email}', telefon = '${telefon}', nume_utilizator = '${nume_utilizator}' where id_utilizator = ${utilizatorId}`,
+      update_utilizator_pass_query = `update Utilizator set parola_criptata = '${parola}' where id_utilizator = ${utilizatorId}`;
 
-  let check_duplicate_query = ``,
-    update_utilizator_query = `update Utilizator set nume = '${nume}', prenume = '${prenume}', email = '${email}', telefon = '${telefon}', nume_utilizator = '${nume_utilizator}' where id_utilizator = ${utilizatorId}`,
-    update_utilizator_pass = `update Utilizator set parola_criptata = ${parola} where id_utilizator = ${utilizatorId}`;
+    // execute query
+    const db = helpers.makeDb(helpers.db_config);
 
-  // execute query
-  const db = helpers.makeDb(helpers.db_config);
-
-  // execute query
-  try {
-    const update_utilizator = await db.query(update_utilizator_query);
-  } catch (err) {
-    console.log(err);
-    req.flash('error', err.map((err) => err.msg));
-    res.redirect(`/utilizatori/${utilizatorId}/edit`);
-  } finally {
-    await db.close();
-    req.flash('success', `Utilizatorul ${nume_utilizator} a fost actualizat cu succes in baza de date.`);
-    res.redirect(`/utilizatori/${utilizatorId}`);
-  }
+    // execute query
+    try {
+      const update_utilizator = await db.query(update_utilizator_query);
+      if (parola.length) {
+        const update_utilizator_pass = await db.query(update_utilizator_pass_query);
+      }
+    } catch (err) {
+      console.log(err);
+      req.flash('error', err.map((err) => err.msg));
+      res.redirect(`/utilizatori/${utilizatorId}/edit`);
+    } finally {
+      await db.close();
+      req.flash('success', `Utilizatorul ${nume_utilizator} a fost actualizat cu succes in baza de date.`);
+      res.redirect(`/utilizatori/${utilizatorId}`);
+    }
+  })
 
 }
 
@@ -257,7 +261,7 @@ exports.deleteUtilizator = async (req, res) => {
 }
 
 exports.encryptPasswords = async (req, res) => {
-  bcrypt.hash('parola',10, async(err, hash) => {
+  bcrypt.hash('parola', 10, async (err, hash) => {
     let update_query = `update Utilizator set parola_criptata = '${hash}'`;
     // execute query
     const db = helpers.makeDb(helpers.db_config);
@@ -273,5 +277,5 @@ exports.encryptPasswords = async (req, res) => {
       res.redirect(`/`);
     }
   })
-  
-} 
+
+}

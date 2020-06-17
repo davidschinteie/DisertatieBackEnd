@@ -1,4 +1,5 @@
 const helpers = require('../helpers')
+const bcrypt = require("bcrypt")
 
 exports.getAllMedici = async (req, res) => {
   // @todo: de adaugat optiunea de filtrare a userilor dupa nume sau specialitate
@@ -257,28 +258,30 @@ exports.addMedic = async (req, res) => {
     return res.redirect('/medici/add');
   }
 
-  let check_duplicate_query = ``;
-  let insert_utilizator_query = `insert into Utilizator(nume, prenume, email, telefon, nume_utilizator, parola_criptata, id_rol) values ('${nume}', '${prenume}', '${email}', '${telefon}', '${nume_utilizator}', '${parola}', 4);`;
-  let insert_medic_query = `insert into Medic(id_grad, id_specialitate, id_utilizator) values ('${grad_profesional}', '${specialitate}', (select id_utilizator from Utilizator where nume_utilizator = '${nume_utilizator}'))`;
-  let medic_id_query = `select id_medic from Medic order by id_medic desc limit 1`;
+  bcrypt.hash(parola, 10, async (err, hash) => {
+    let check_duplicate_query = ``;
+    let insert_utilizator_query = `insert into Utilizator(nume, prenume, email, telefon, nume_utilizator, parola_criptata, id_rol) values ('${nume}', '${prenume}', '${email}', '${telefon}', '${nume_utilizator}', '${hash}', 4);`;
+    let insert_medic_query = `insert into Medic(id_grad, id_specialitate, id_utilizator) values ('${grad_profesional}', '${specialitate}', (select id_utilizator from Utilizator where nume_utilizator = '${nume_utilizator}'))`;
+    let medic_id_query = `select id_medic from Medic order by id_medic desc limit 1`;
 
-  // execute query
-  const db = helpers.makeDb(helpers.db_config);
-  let medic_id;
+    // execute query
+    const db = helpers.makeDb(helpers.db_config);
+    let medic_id;
 
-  // execute query
-  try {
-    const insert_utilizator = await db.query(insert_utilizator_query);
-    const insert_medic = await db.query(insert_medic_query);
-    medic_id = await db.query(medic_id_query);
-  } catch (err) {
-    req.flash('error', err.map(err => err.msg));
-    res.redirect('/medici/add');
-  } finally {
-    await db.close();
-    req.flash('success', `Medicul ${nume} ${prenume} a fost adaugat cu succes in baza de date.`);
-    res.redirect(`/medici/${medic_id[0].id_medic}`);
-  }
+    // execute query
+    try {
+      const insert_utilizator = await db.query(insert_utilizator_query);
+      const insert_medic = await db.query(insert_medic_query);
+      medic_id = await db.query(medic_id_query);
+    } catch (err) {
+      req.flash('error', err.map(err => err.msg));
+      res.redirect('/medici/add');
+    } finally {
+      await db.close();
+      req.flash('success', `Medicul ${nume} ${prenume} a fost adaugat cu succes in baza de date.`);
+      res.redirect(`/medici/${medic_id[0].id_medic}`);
+    }
+  })
 
 }
 
@@ -312,29 +315,34 @@ exports.updateMedic = async (req, res) => {
     return res.redirect(`/medici/${doctorId}/edit`);
   }
 
-  let update_utilizator_query = `update Utilizator set nume = '${nume}', prenume = '${prenume}', email = '${email}', telefon = '${telefon}', nume_utilizator = '${nume_utilizator}' where id_utilizator = ${utilizatorId}`,
-    update_utilizator_pass = `update Utilizator set parola_criptata = ${parola} where id_utilizator = ${utilizatorId}`,
-    update_medic_query = `update Medic set id_grad = ${grad_profesional}, id_specialitate = ${specialitate} where id_medic = ${doctorId}`;
+  bcrypt.hash(parola, 10, async (err, hash) => {
+    let update_utilizator_query = `update Utilizator set nume = '${nume}', prenume = '${prenume}', email = '${email}', telefon = '${telefon}', nume_utilizator = '${nume_utilizator}' where id_utilizator = ${utilizatorId}`,
+      update_utilizator_pass_query = `update Utilizator set parola_criptata = '${hash}' where id_utilizator = ${utilizatorId}`,
+      update_medic_query = `update Medic set id_grad = ${grad_profesional}, id_specialitate = ${specialitate} where id_medic = ${doctorId}`;
 
 
-  // execute query
-  const db = helpers.makeDb(helpers.db_config);
+    // execute query
+    const db = helpers.makeDb(helpers.db_config);
 
-  let medic;
+    let medic;
 
-  // execute query
-  try {
-    const update_utilizator = await db.query(update_utilizator_query);
-    const update_medic = await db.query(update_medic_query);
-    // @todo: update_utilizator_pass;
-  } catch (err) {
-    req.flash('error', err.map(err => err.msg));
-    res.redirect(`/medici/${doctorId}/edit`);
-  } finally {
-    await db.close();
-    req.flash('success', `Medicul ${nume} ${prenume} a fost actualizat cu succes in baza de date.`);
-    res.redirect(`/medici/${doctorId}`);
-  }
+    // execute query
+    try {
+      const update_utilizator = await db.query(update_utilizator_query);
+      const update_medic = await db.query(update_medic_query);
+      if (parola.length) {
+        const update_utilizator_pass = await db.query(update_utilizator_pass_query);
+      }
+    } catch (err) {
+      console.log(err);
+      req.flash('error', err.map(err => err.msg));
+      res.redirect(`/medici/${doctorId}/edit`);
+    } finally {
+      await db.close();
+      req.flash('success', `Medicul ${nume} ${prenume} a fost actualizat cu succes in baza de date.`);
+      res.redirect(`/medici/${doctorId}`);
+    }
+  })
 
 }
 

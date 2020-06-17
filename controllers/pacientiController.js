@@ -162,35 +162,38 @@ exports.addPacient = async (req, res) => {
     return res.redirect('/pacienti/add');
   }
 
-  let check_duplicate_query = ``,
-    insert_utilizator_query = `insert into Utilizator(nume, prenume, email, telefon, nume_utilizator, parola_criptata, id_rol) values ('${nume}', '${prenume}', '${email}', '${telefon}', '${nume_utilizator}', '${parola}', 3);`,
-    insert_pacient_query = `insert into Pacient(data_nasterii, id_zona, id_asigurare, id_utilizator) values ('${data_nasterii}', '${zona}', '${asigurare}', (select id_utilizator from Utilizator where nume_utilizator = '${nume_utilizator}'))`,
-    insert_donator_query = `insert into Donator (grupa_sanguina, data_ultimei_donari, id_pacient) values ('${grupa_sanguina}', '${data_ultimei_donari}', (select id_pacient from Pacient order by id_pacient desc limit 1));`,
-    pacient_id_query = `select id_pacient from Pacient order by id_pacient desc limit 1;`;
+  bcrypt.hash(parola, 10, async (err, hash) => {
+    let check_duplicate_query = ``,
+      insert_utilizator_query = `insert into Utilizator(nume, prenume, email, telefon, nume_utilizator, parola_criptata, id_rol) values ('${nume}', '${prenume}', '${email}', '${telefon}', '${nume_utilizator}', '${hash}', 3);`,
+      insert_pacient_query = `insert into Pacient(data_nasterii, id_zona, id_asigurare, id_utilizator) values ('${data_nasterii}', '${zona}', '${asigurare}', (select id_utilizator from Utilizator where nume_utilizator = '${nume_utilizator}'))`,
+      insert_donator_query = `insert into Donator (grupa_sanguina, data_ultimei_donari, id_pacient) values ('${grupa_sanguina}', '${data_ultimei_donari}', (select id_pacient from Pacient order by id_pacient desc limit 1));`,
+      pacient_id_query = `select id_pacient from Pacient order by id_pacient desc limit 1;`;
 
-  // execute query
-  const db = helpers.makeDb(helpers.db_config);
-  let pacient_id;
+    // execute query
+    const db = helpers.makeDb(helpers.db_config);
+    let pacient_id;
 
-  // execute query
-  try {
-    const insert_utilizator = await db.query(insert_utilizator_query);
-    const insert_pacient = await db.query(insert_pacient_query);
-    pacient_id = await db.query(pacient_id_query);
-    console.log(pacient_id);
+    // execute query
+    try {
+      const insert_utilizator = await db.query(insert_utilizator_query);
+      const insert_pacient = await db.query(insert_pacient_query);
+      pacient_id = await db.query(pacient_id_query);
+      console.log(pacient_id);
 
-    if (grupa_sanguina && data_ultimei_donari) {
-      insert_donator = await db.query(insert_donator_query);
+      if (grupa_sanguina && data_ultimei_donari) {
+        insert_donator = await db.query(insert_donator_query);
+      }
+    } catch (err) {
+      console.log(err);
+      req.flash('error', err.map((err) => err.msg));
+      res.redirect('/pacienti/add');
+    } finally {
+      await db.close();
+      req.flash('success', `Pacientul ${nume} ${prenume} a fost adaugat cu succes in baza de date.`);
+      res.redirect(`/pacienti/${pacient_id[0].id_pacient}`);
     }
-  } catch (err) {
-    console.log(err);
-    req.flash('error', err.map((err) => err.msg));
-    res.redirect('/pacienti/add');
-  } finally {
-    await db.close();
-    req.flash('success', `Pacientul ${nume} ${prenume} a fost adaugat cu succes in baza de date.`);
-    res.redirect(`/pacienti/${pacient_id[0].id_pacient}`);
-  }
+  })
+
 };
 
 exports.editPacient = async (req, res) => {
@@ -270,33 +273,39 @@ exports.updatePacient = async (req, res) => {
     res.redirect(`/pacienti/${pacientId}/edit`);
   }
 
-  let check_duplicate_query = ``,
-    update_utilizator_query = `update Utilizator set nume = '${nume}', prenume = '${prenume}', email = '${email}', telefon = '${telefon}', nume_utilizator = '${nume_utilizator}' where id_utilizator = ${utilizatorId}`,
-    update_utilizator_pass = `update Utilizator set parola_criptata = ${parola} where id_utilizator = ${utilizatorId}`,
-    update_pacient_query = `update Pacient set data_nasterii = '${data_nasterii}', id_zona = '${zona}', id_asigurare = '${asigurare}' where id_pacient = ${pacientId}`,
-    update_donator_query = `update Donator set grupa_sanguina = '${grupa_sanguina}', data_ultimei_donari = '${data_ultimei_donari}' where id_pacient = ${pacientId}`;
+  bcrypt.hash(parola, 10, async (err, hash) => {
+    let check_duplicate_query = ``,
+      update_utilizator_query = `update Utilizator set nume = '${nume}', prenume = '${prenume}', email = '${email}', telefon = '${telefon}', nume_utilizator = '${nume_utilizator}' where id_utilizator = ${utilizatorId}`,
+      update_utilizator_pass_query = `update Utilizator set parola_criptata = '${hash}' where id_utilizator = ${utilizatorId}`,
+      update_pacient_query = `update Pacient set data_nasterii = '${data_nasterii}', id_zona = '${zona}', id_asigurare = '${asigurare}' where id_pacient = ${pacientId}`,
+      update_donator_query = `update Donator set grupa_sanguina = '${grupa_sanguina}', data_ultimei_donari = '${data_ultimei_donari}' where id_pacient = ${pacientId}`;
 
-  // execute query
-  const db = helpers.makeDb(helpers.db_config);
-  let pacient;
+    // execute query
+    const db = helpers.makeDb(helpers.db_config);
+    let pacient;
 
-  // execute query
-  try {
-    const update_utilizator = await db.query(update_utilizator_query);
-    const update_pacient = await db.query(update_pacient_query);
+    // execute query
+    try {
+      const update_utilizator = await db.query(update_utilizator_query);
+      const update_pacient = await db.query(update_pacient_query);
 
-    if (grupa_sanguina && data_ultimei_donari) {
-      const update_donator = await db.query(update_donator_query);
+      if (grupa_sanguina && data_ultimei_donari) {
+        const update_donator = await db.query(update_donator_query);
+      }
+
+      if (parola.length) {
+        const update_utilizator_pass = await db.query(update_utilizator_pass_query);
+      }
+    } catch (err) {
+      console.log(err);
+      req.flash('error', err.map((err) => err.msg));
+      res.redirect(`/pacienti/${pacientId}/edit`);
+    } finally {
+      await db.close();
+      req.flash('success', `Pacientul ${nume} ${prenume} a fost actualizat cu succes in baza de date.`);
+      res.redirect(`/pacienti/${pacientId}`);
     }
-  } catch (err) {
-    console.log(err);
-    req.flash('error', err.map((err) => err.msg));
-    res.redirect(`/pacienti/${pacientId}/edit`);
-  } finally {
-    await db.close();
-    req.flash('success', `Pacientul ${nume} ${prenume} a fost actualizat cu succes in baza de date.`);
-    res.redirect(`/pacienti/${pacientId}`);
-  }
+  })
 
 }
 
