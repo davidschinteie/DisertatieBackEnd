@@ -229,7 +229,7 @@ exports.editPacient = async (req, res) => {
   } finally {
     await db.close();
     res.render('pacient_edit', {
-      title: `Editarea pacientului ${pacient[0].nume}`,
+      title: `Editarea pacientului ${pacient[0].nume} ${pacient[0].prenume}`,
       pacient: pacient[0],
       asigurari: asigurari,
       zone: zone,

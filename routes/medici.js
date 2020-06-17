@@ -2,31 +2,75 @@ const express = require('express');
 const router = express.Router();
 const mediciController = require('../controllers/mediciController');
 
+// verificarea autentificarii
+function loginRequired(req, res, next) {
+  if (req.session.utilizatorId == null) {
+    req.flash('error', `Trebuie să fii autentificat!`);
+    return res.redirect('/login')
+  }
+  next()
+}
+
+function loginRequiredPacient(req, res, next) {
+  if (req.session.utilizator.id_rol != 3) {
+    req.flash('error', `Drepturi insuficiente!`);
+    return res.redirect(`/utilizatori/${req.session.utilizatorId}`)
+  }
+  next()
+}
+
+function loginRequiredMedic(req, res, next) {
+  if ((req.session.medic && req.session.medic.id_medic == req.params.id) || req.session.utilizator.id_rol == 1) {
+    next();
+    return;
+  }
+  req.flash('error', `Drepturi insuficiente!`);
+  return res.redirect(`/utilizatori/${req.session.utilizatorId}`)
+}
+
+function loginRequiredAdmin(req, res, next) {
+  if (req.session.utilizator.id_rol != 1) {
+    req.flash('error', `Drepturi insuficiente!`)
+    return res.redirect(`/utilizatori/${req.session.utilizatorId}`)
+  }
+  next()
+}
+
+
 // Vizualizarea tuturor medicilor
+// toti utilizatorii
 router.get('/', mediciController.getAllMedici);
 
 // Vizualizarea formularului de adaugare al unui nou medic
-router.get('/add', mediciController.addMedicView);
+// doar admin-ul
+router.get('/add', loginRequired, loginRequiredAdmin, mediciController.addMedicView);
 
 // Vizualizarea formularului de editare al unui medic
-router.get('/:id/edit', mediciController.editMedic);
+// doar medicul sau adminul
+router.get('/:id/edit', loginRequired, loginRequiredMedic, mediciController.editMedic);
 
 // Vizualizarea formularului de programare al unui nou medic
-router.get('/:id/programare', mediciController.programareMedicView);
+// doar pacientul
+router.get('/:id/programare', loginRequired, loginRequiredPacient, mediciController.programareMedicView);
 
 // Vizualizarea unui singur medic
+// toti utilizatorii
 router.get('/:id', mediciController.getSingleMedic);
 
 // Adaugarea unui nou medic
-router.post('/add', mediciController.addMedic);
+// doar admin-ul
+router.post('/add', loginRequired, loginRequiredAdmin, mediciController.addMedic);
 
 // Actualizarea unui medic
-router.post('/:id/edit', mediciController.updateMedic);
+// doar medicul sau admin-ul
+router.post('/:id/edit', loginRequired, loginRequiredMedic, mediciController.updateMedic);
 
 // Adaugarea unei noi programari pentru medic
-router.post('/:id/programare', mediciController.programareMedic);
+// doar pacientul
+router.post('/:id/programare', loginRequired, loginRequiredPacient, mediciController.programareMedic);
 
 // Stergerea unui medic
-router.post('/:id/delete', mediciController.deleteMedic);
+// doar admin-ul
+router.post('/:id/delete', loginRequired, loginRequiredAdmin, mediciController.deleteMedic);
 
 module.exports = router;

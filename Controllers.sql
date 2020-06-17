@@ -357,14 +357,14 @@ from OrarMedic
 join Cabinet on Cabinet.id_cabinet = OrarMedic.id_cabinet
 join Policlinica on Policlinica.id_policlinica = Cabinet.id_policlinica;
 
-select * from Programare;
+select * from Medic where id_utilizator = (select id_utilizator from Utilizator where nume_utilizator = 'vlad.predescu');
 
-select * from serviciuMedical;
+select * from Roluri;
+update Utilizator set parola_criptata = 'parola';
+select concat(nume, ' ',prenume) as nume, id_utilizator from Utilizator where nume_utilizator = carmenalexandra_huruiala and parola_criptata = parola;
+select * from serviciuMedical where denumire_serviciu = 'Consult epidemiologie';
 
-select distinct 
-    Cabinet.id_cabinet, Cabinet.denumire as cabinet, Policlinica.id_policlinica as link_policlinica_id, Policlinica.denumire as policlinica
-    from OrarMedic 
-    join Cabinet on Cabinet.id_cabinet = OrarMedic.id_cabinet
-    join Policlinica on Policlinica.id_policlinica = Cabinet.id_policlinica
-    join Programare.id_medic = OrarMedic.id_medic
-    where Programare.id_programare = 509;
+
+select * from Utilizator;
+
+insert into Utilizator(nume, prenume, email, nume_utilizator, parola_criptata, id_rol) values ('Schinteie', 'David', 'davidschinteie@gmail.com', 'davidschinteie', '$2b$10$C13g5hx1IHY.TzTT877If.63rTLDuciB.Vurk362Qn4RA/3ldCOTO', 1);

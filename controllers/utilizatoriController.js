@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt")
 const helpers = require('../helpers')
 
 exports.getAllUtilizatori = async (req, res) => {
@@ -135,7 +136,8 @@ exports.getSingleUtilizator = async (req, res) => {
         utilizator: single_utilizator,
         permisiuni: permisiuni_utilizator,
         programari: programari,
-        profil_id: profil_id
+        profil_id: profil_id,
+        utilizator_sesiune: req.session.utilizator
       });
     }
   }
@@ -253,3 +255,23 @@ exports.deleteUtilizator = async (req, res) => {
   }
 
 }
+
+exports.encryptPasswords = async (req, res) => {
+  bcrypt.hash('parola',10, async(err, hash) => {
+    let update_query = `update Utilizator set parola_criptata = '${hash}'`;
+    // execute query
+    const db = helpers.makeDb(helpers.db_config);
+
+    // execute query 
+    try {
+      const query = await db.query(update_query);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      await db.close();
+      req.flash('success', `Utilizatori actualizati cu succes in baza de date.`);
+      res.redirect(`/`);
+    }
+  })
+  
+} 

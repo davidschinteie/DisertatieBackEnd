@@ -1,0 +1,16 @@
+mixin loginForm()
+  form.bg-white.shadow-md.rounded.px-8.pt-6.pb-8.mb-4.flex.flex-col(action=currentPath method='POST')
+    .mb-4
+      label.block.text-grey-darker.text-sm.font-bold.mb-2(for='utilizator')
+        | Utilizator
+      input#utilizator.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-grey-darker(type='text', placeholder='Utilizator' name='utilizator')
+    .mb-6
+      label.block.text-grey-darker.text-sm.font-bold.mb-2(for='parola')
+        | Parola
+      input#parola.shadow.appearance-none.border.border-red.rounded.w-full.py-2.px-3.text-grey-darker.mb-3(type='password', placeholder='******************', name='parola')
+      //- p.text-red-600.text-xs.italic Please choose a password.
+    .flex.items-center.justify-between
+      button.bg-blue-800.text-white.font-bold.py-2.px-4.rounded(class='hover:bg-blue-dark', type='submit')
+        | Logare
+      //- a.inline-block.align-baseline.font-bold.text-sm.text-blue-800(class='hover:text-blue-darker', href='#')
+        | Forgot Password?

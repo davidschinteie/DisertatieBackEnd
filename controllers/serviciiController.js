@@ -6,7 +6,7 @@ exports.getAllServicii = async (req, res) => {
   from serviciuMedical
   join SpecialitateMedicala on serviciuMedical.id_specialitate = SpecialitateMedicala.id_specialitate;`;
 
-  // execute query
+  // create db connection
   const db = helpers.makeDb(helpers.db_config);
 
   // execute query

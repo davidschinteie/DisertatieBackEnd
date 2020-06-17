@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  //- pre= h.dump(locals.programari_medic)
+  //- pre= h.dump(locals)
   section.relative.py-16
     .container.mx-auto
       .relative.flex.flex-col.min-w-0.break-words.bg-white.w-full.mb-6.shadow-2xl.rounded-lg
@@ -11,15 +11,21 @@ block content
               .relative
                 i.fal.fa-user-md.fa-fw.text-8xl.my-8
             .flex.absolute.top-center.right-0.justify-center.flex-col.transform(class='-translate-y-1/2')
-              a.bg-transparent.border.border-gray-500.text-gray-500.font-bold.py-2.px-4.mb-3.rounded-full(class='hover:border-gray-800 hover:text-gray-800' href=`${currentPath}/programare`) 
-                i.fal.fa-calendar-check.pr-2 
-                | Solicita programare
-              a.bg-transparent.border.border-gray-500.text-gray-500.font-bold.py-2.px-4.mb-3.rounded-full(class='hover:border-gray-800 hover:text-gray-800' href=`${currentPath}/edit`) 
-                i.far.fa-pen.pr-2 
-                | Editeaza Medic
-              button.modal-open.bg-transparent.border.border-gray-500.text-gray-500.font-bold.py-2.px-4.rounded-full(class='hover:border-gray-800 hover:text-gray-800' href='#/') 
-                i.fad.fa-trash.pr-2 
-                | Sterge Medic
+              //- doar pacientii
+              if session.utilizatorId != null && session.utilizator.id_rol == 3
+                a.bg-transparent.border.border-gray-500.text-gray-500.font-bold.py-2.px-4.mb-3.rounded-full(class='hover:border-gray-800 hover:text-gray-800' href=`${currentPath}/programare`) 
+                  i.fal.fa-calendar-check.pr-2 
+                  | Solicita programare
+              //- doar medicul curent sau adminul
+              if (session.medic  && medic[0].id_medic == session.medic.id_medic) || (session.utilizatorId != null && session.utilizator.id_rol == 1)
+                a.bg-transparent.border.border-gray-500.text-gray-500.font-bold.py-2.px-4.mb-3.rounded-full(class='hover:border-gray-800 hover:text-gray-800' href=`${currentPath}/edit`) 
+                  i.far.fa-pen.pr-2 
+                  | Editeaza Profil
+              //- doar adminul
+              if session.utilizatorId != null && session.utilizator.id_rol == 1
+                button.modal-open.bg-transparent.border.border-gray-500.text-gray-500.font-bold.py-2.px-4.rounded-full(class='hover:border-gray-800 hover:text-gray-800' href='#/') 
+                  i.fad.fa-trash.pr-2 
+                  | Sterge Medic
           .text-center.mt-12
             h3.text-4xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-2
               | #{medic[0].nume}
@@ -64,36 +70,38 @@ block content
                           div(class='w-8/12')
                             span.text-sm.font-semibold.block #{program.cabinet}
                             span.text-sm #{program.policlinica}
-          if locals.programari_medic && !h.isEmptyObject(locals.programari_medic)
-            .mt-4.py-10.border-t.border-gray-300.text-center
-              h3.text-3xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-4 Programari Medic
-              .dataTables_wrapper
-                table#example.stripe.hover.dataTable.programariTable(style='width:100%; padding-top: 1em;  padding-bottom: 1em;')
-                  thead
-                    tr
-                      th(data-priority='1') Serviciu medical
-                      th(data-priority='2') Ziua
-                      th(data-priority='3') Moment
-                      th(data-priority='4') Status
-                      th(data-priority='5') Cabinet
-                      th(data-priority='6') Policlinica
-                      th(data-priority='7') Link
-                  tbody
-                  each programare in programari_medic
-                    tr
-                      td= programare.denumire_serviciu
-                      td #{h.moment(programare.moment_programare).format('Do MMMM')}
-                      td
-                        - let a = programare.durata.split(':')
-                        - let minutes = (+a[0]) * 60 + (+a[1])
-                        i.fal.fa-clock.mr-2
-                        | #{h.moment(programare.moment_programare).format('HH:mm')} - #{h.moment(programare.moment_programare).add(minutes, 'minutes').format('HH:mm')}
-                      td= programare.status_programare
-                      td= programare.cabinet
-                      td 
-                        a(href=`/policlinici/${programare.policlinica_link_id}` class="font-bold")=programare.policlinica
-                      td 
-                        a(href=`/programari/${programare.programare_link_id}` class="font-bold") Vezi Programare
+          //- doar adminul sau medicul curent
+          if (session.medic  && medic[0].id_medic == session.medic.id_medic) || (session.utilizatorId != null && session.utilizator.id_rol == 1)
+            if locals.programari_medic && !h.isEmptyObject(locals.programari_medic)
+              .mt-4.py-10.border-t.border-gray-300.text-center
+                h3.text-3xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-4 Programari Medic
+                .dataTables_wrapper
+                  table#example.stripe.hover.dataTable.programariTable(style='width:100%; padding-top: 1em;  padding-bottom: 1em;')
+                    thead
+                      tr
+                        th(data-priority='1') Serviciu medical
+                        th(data-priority='2') Ziua
+                        th(data-priority='3') Moment
+                        th(data-priority='4') Status
+                        th(data-priority='5') Cabinet
+                        th(data-priority='6') Policlinica
+                        th(data-priority='7') Link
+                    tbody
+                    each programare in programari_medic
+                      tr
+                        td= programare.denumire_serviciu
+                        td #{h.moment(programare.moment_programare).format('Do MMMM')}
+                        td
+                          - let a = programare.durata.split(':')
+                          - let minutes = (+a[0]) * 60 + (+a[1])
+                          i.fal.fa-clock.mr-2
+                          | #{h.moment(programare.moment_programare).format('HH:mm')} - #{h.moment(programare.moment_programare).add(minutes, 'minutes').format('HH:mm')}
+                        td= programare.status_programare
+                        td= programare.cabinet
+                        td 
+                          a(href=`/policlinici/${programare.policlinica_link_id}` class="font-bold")=programare.policlinica
+                        td 
+                          a(href=`/programari/${programare.programare_link_id}` class="font-bold") Vezi Programare
   
 block modal
   .modal.opacity-0.pointer-events-none.fixed.w-full.h-full.top-0.left-0.flex.items-center.justify-center
