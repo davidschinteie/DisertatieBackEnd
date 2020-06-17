@@ -15,8 +15,6 @@ const expressValidator = require('express-validator');
 // create our Express app
 const app = express();
 
-const port = 7000;
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views')); // this is the folder where we keep our pug files
 app.set('view engine', 'pug'); // we use the engine pug, mustache or EJS work great too
@@ -32,9 +30,6 @@ app.use(express.urlencoded({
   extended: false
 }));
 app.use(expressValidator());
-
-// set express to use this port
-app.set('port', process.env.port || port);
 
 // populates req.cookies with any cookies that came along with the request
 app.use(cookieParser());
@@ -99,7 +94,11 @@ if (app.get('env') === 'development') {
 // production error handler
 app.use(errorHandlers.productionErrors);
 
+// set express to use this port
+const port = 7000;
+app.set('port', process.env.PORT || port);
+
 // set the app to listen on the port
-app.listen(port, () => {
-  console.log(`Server running on port: ${port}`);
+const server = app.listen(app.get('port'), () => {
+  console.log(`Server running on port: ${server.address().port}`);
 });
