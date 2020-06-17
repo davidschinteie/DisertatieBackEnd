@@ -1,0 +1,50 @@
+extends layout
+
+block content
+  //- pre= h.dump(locals.policlinica)
+  section.relative.py-16
+    .container.mx-auto
+      .relative.flex.flex-col.min-w-0.break-words.bg-white.w-full.mb-6.shadow-2xl.rounded-lg
+        .px-6
+          .flex.flex-wrap.justify-center.relative
+            .w-full.px-4.flex.justify-center(class='lg:w-3/12')
+              .relative
+                i.fal.fa-clinic-medical.fa-fw.text-8xl.my-8
+          .text-center.mt-12.mb-12
+            h3.text-4xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-2
+              | #{policlinica.denumire}
+            .mb-2.text-gray-700
+              i.fas.fa-envelope.mr-2.text-lg.text-gray-500
+              | #{policlinica.email}
+            .mb-2.text-gray-700
+              i.fas.fa-phone-alt.mr-2.text-lg.text-gray-500
+              | #{policlinica.telefon}
+            .mb-2.text-gray-700
+              i.fas.fa-map-marker-alt.mr-2.text-lg.text-gray-500
+              | #{policlinica.adresa}
+          if !h.isEmptyObject(locals.cabinete)
+            .mt-10.py-10.border-t.border-gray-300.text-center
+              h3.text-3xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-4 Cabinete
+              .flex.flex-wrap.justify-center
+                .w-full.grid.grid-cols-3.gap-4.mb-6(class='lg:w-9/12')
+                  each cabinet in cabinete
+                    .bg-white.rounded-lg.p-4.shadow
+                      div
+                        p.text-sm.font-semibold #{cabinet.Cabinet}
+                        p.text-sm #{cabinet.specialitate}
+          if !h.isEmptyObject(locals.orar)
+            .mt-4.py-10.border-t.border-gray-300.text-center
+              h3.text-3xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-4 Orar Policlinica
+              .flex.flex-wrap.justify-center
+                .w-full.grid.grid-cols-3.gap-4.mb-6(class='lg:w-9/12')
+                  each program in orar
+                    .bg-white.rounded-lg.p-4.shadow
+                      div
+                        span.text-gray-900.relative.inline-block.date.uppercase.font-medium.tracking-widest.text-left #{program.ziua_saptamanii}
+                        .flex.mb-2
+                          div(class='w-3/12')
+                            span.text-sm.text-gray-600.block #{program.ora_inceput.slice(0, -3)}
+                            span.text-sm.text-gray-600.block #{program.ora_sfarsit.slice(0, -3)}
+                          div(class='w-1/12')
+                            span.bg-blue-400.h-2.w-2.rounded-full.block.mt-2
+  

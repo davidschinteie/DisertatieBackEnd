@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  //- pre= h.dump(locals.asigurari)
+  section.relative.py-16
+    .container.mx-auto
+      .relative.flex.flex-col.min-w-0.break-words.bg-white.w-full.mb-6.shadow-2xl.rounded-lg
+        .px-6
+          .flex.flex-wrap.justify-center.relative
+            .w-full.px-4.flex.justify-center(class='lg:w-3/12')
+              .relative
+                i.fal.fa-coins.fa-fw.text-8xl.my-8
+          .text-center.mt-12.mb-12
+            h3.text-4xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-2
+              | Pachete de asigurari
+          if !h.isEmptyObject(locals.asigurari)
+            .mt-10.py-10.border-t.border-gray-300.text-center
+              .flex.flex-wrap.justify-center
+                .w-full.grid.grid-cols-3.gap-4.mb-6(class='lg:w-9/12')
+                  each asigurare in asigurari
+                    .bg-white.rounded-lg.p-4.shadow
+                      div
+                        p.text-sm.font-semibold #{asigurare.denumire}
+                        p.text-sm #{asigurare.descriere}
+                        p.text-sm Pret anual: #{asigurare.pret_lunar} RON
+                        p.text-sm Pret lunar: #{asigurare.pret_anual} RON
+  

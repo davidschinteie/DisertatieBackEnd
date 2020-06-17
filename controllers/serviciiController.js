@@ -8,17 +8,20 @@ exports.getAllServicii = async (req, res) => {
 
   // create db connection
   const db = helpers.makeDb(helpers.db_config);
+  let servicii;
 
   // execute query
   try {
-    const servicii = await db.query(query);
-    res.json(servicii);
+    servicii = await db.query(query);
   } catch (err) {
-    res.status(400).json({
-      message: err
-    });
+    console.log(err);
+    req.flash('error', err.map((err) => err.msg));
+    res.redirect('/');
   } finally {
     await db.close();
+    res.render('servicii_list', {
+      servicii: servicii
+    });
   }
 };
 
@@ -54,24 +57,30 @@ exports.getSingleServiciu = async (req, res) => {
 
   // execute query
   const db = helpers.makeDb(helpers.db_config);
+  let serviciu, medici_serivciu, cabinete_serviciu, asigurare_serviciu;
 
   // execute query
   try {
-    const serviciu = await db.query(serviciu_query);
-    const medici_serivciu = await db.query(medici_serivciu_query);
-    const cabinete_serviciu = await db.query(cabinete_serviciu_query);
-    const asigurare_serviciu = await db.query(asigurare_serviciu_query);
-    let result = {};
-    result.serviciu = serviciu;
-    result.medici_serivciu = medici_serivciu;
-    result.cabinete_serviciu = cabinete_serviciu;
-    result.asigurare_serviciu = asigurare_serviciu;
-    res.json(result);
+    serviciu = await db.query(serviciu_query);
+    medici_serivciu = await db.query(medici_serivciu_query);
+    cabinete_serviciu = await db.query(cabinete_serviciu_query);
+    asigurare_serviciu = await db.query(asigurare_serviciu_query);
   } catch (err) {
-    res.status(400).json({
-      message: err
-    });
+    console.log(err);
+    req.flash('error', err.map((err) => err.msg));
+    res.redirect('/');
   } finally {
     await db.close();
+    if (serviciu.length == 0) {
+      req.flash('error', 'Serviciul cautat nu este in baza de date.');
+      res.redirect('/servicii');
+    } else {
+      res.render('serviciu_single', {
+        serviciu: serviciu[0],
+        medici_serivciu: medici_serivciu,
+        cabinete_serviciu: cabinete_serviciu,
+        asigurare_serviciu: asigurare_serviciu
+      });
+    }
   }
 }

@@ -6,17 +6,20 @@ exports.getAllAsigurari = async (req, res) => {
 
   // execute query
   const db = helpers.makeDb(helpers.db_config);
+  let asigurari;
 
   // execute query
   try {
-    const asigurari = await db.query(query);
-    res.json(asigurari);
+    asigurari = await db.query(query);
   } catch (err) {
-    res.status(400).json({
-      message: err
-    });
+    console.log(err);
+    req.flash('error', err.map((err) => err.msg));
+    res.redirect('/');
   } finally {
     await db.close();
+    res.render('asigurari_list', {
+      asigurari: asigurari
+    });
   }
 };
 

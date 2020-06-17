@@ -52,15 +52,15 @@ html(lang="en")
                       i.fal.fa-calendar-check.fa-fw.mr-3
                       span.pb-1.text-sm(class='md:pb-0') Programari
                 li.mr-6.my-2(class='md:my-0')
-                  a.block.py-1.pl-1.align-middle.text-gray-500.no-underline.border-b-2.border-white(href='/policlinici', class='md:py-3 hover:text-gray-900 hover:border-green-500')
+                  a.block.py-1.pl-1.align-middle.no-underline.border-b-2(href='/policlinici', class=(currentPath.startsWith('/policlinici') ? 'text-gray-700 border-green-600 md:py-3 hover:text-gray-900 hover:border-green-600' : ' text-gray-500 border-white md:py-3 hover:text-gray-900 hover:border-green-500'))
                     i.fal.fa-clinic-medical.fa-fw.mr-3
                     span.pb-1.text-sm(class='md:pb-0') Policlinici
                 li.mr-6.my-2(class='md:my-0')
-                  a.block.py-1.pl-1.align-middle.text-gray-500.no-underline.border-b-2.border-white(href='/servicii', class='md:py-3 hover:text-gray-900 hover:border-red-500')
+                  a.block.py-1.pl-1.align-middle.no-underline.border-b-2(href='/servicii', class=(currentPath.startsWith('/servicii') ? 'text-gray-700 border-red-500 md:py-3 hover:text-gray-900 hover:border-red-500' : ' text-gray-500 border-white md:py-3 hover:text-gray-900 hover:border-red-500'))
                     i.fal.fa-head-side-medical.fa-fw.mr-3
                     span.pb-1.text-sm(class='md:pb-0') Servicii Medicale
                 li.mr-6.my-2(class='md:my-0')
-                  a.block.py-1.pl-1.align-middle.text-gray-500.no-underline.border-b-2.border-white(href='/asigurari', class='md:py-3 hover:text-gray-900 hover:border-red-500')
+                  a.block.py-1.pl-1.align-middle.no-underline.border-b-2(href='/asigurari', class=(currentPath.startsWith('/asigurari') ? 'text-gray-700 border-red-500 md:py-3 hover:text-gray-900 hover:border-red-500' : ' text-gray-500 border-white md:py-3 hover:text-gray-900 hover:border-red-500'))
                     i.fal.fa-coins.fa-fw.mr-3
                     span.pb-1.text-sm(class='md:pb-0') Asigurari Medicale
 
