@@ -29,7 +29,7 @@ function loginRequiredAdmin(req, res, next) {
 }
 
 // Criptarea tuturor parolelor
-// router.get('/encrypt-passwords', utilizatoriController.encryptPasswords);
+router.get('/encrypt-passwords', utilizatoriController.encryptPasswords);
 
 // Vizualizarea tuturor utilizatorilor
 router.get('/', loginRequired, loginRequiredAdmin, utilizatoriController.getAllUtilizatori);

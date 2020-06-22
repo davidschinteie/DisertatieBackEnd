@@ -2,23 +2,26 @@ const helpers = require('../helpers');
 
 exports.getAllPoliclinici = async (req, res) => {
   // query database to get all the polyclinics
-  let query = `select Policlinica.denumire, Policlinica.email, Policlinica.telefon, Policlinica.adresa, Policlinica.link_google_map, Zona.denumire as zona
+  let query = `select Policlinica.id_policlinica, Policlinica.denumire, Policlinica.email, Policlinica.telefon, Policlinica.adresa, Policlinica.link_google_map, Zona.denumire as zona
   from Policlinica 
   join Zona on Policlinica.zona_id = Zona.id_zona;
   `;
 
   const db = helpers.makeDb(helpers.db_config);
+  let policlinici;
 
   // execute query
   try {
-    const policlinici = await db.query(query);
-    res.json(policlinici);
+    policlinici = await db.query(query);
   } catch (err) {
-    res.status(400).json({
-      message: err
-    });
+    console.log(err);
+    req.flash('error', err.map((err) => err.msg));
+    res.redirect('/');
   } finally {
     await db.close();
+    res.render('policlinici_list', {
+      policlinici: policlinici
+    });
   }
 };
 
@@ -43,22 +46,28 @@ exports.getSinglePoliclinica = async (req, res) => {
   ORDER BY FIELD(ProgramPoliclinica.ziua_saptamanii, 'Lu','Ma','Mi','Joi','Vn','Sa')`
 
   const db = helpers.makeDb(helpers.db_config);
+  let policlinica, cabinete, orar;
 
   // execute query
   try {
-    const policlinica = await db.query(policlinica_query);
-    const policlinica_cabinete = await db.query(cabinete_query);
-    const policlinica_orar = await db.query(orar_query);
-    let result = {};
-    result.policlinica = policlinica;
-    result.cabinete = policlinica_cabinete;
-    result.orar = policlinica_orar;
-    res.json(result);
+    policlinica = await db.query(policlinica_query);
+    cabinete = await db.query(cabinete_query);
+    orar = await db.query(orar_query);
   } catch (err) {
-    res.status(400).json({
-      message: `Policlinica cu id-ul ${clinicId} nu a fost gasita in baza de date.`
-    });
+    console.log(err);
+    req.flash('error', err.map((err) => err.msg));
+    res.redirect('/');
   } finally {
     await db.close();
+    if (policlinica.length == 0) {
+      req.flash('error', 'Policlinica cautata nu este in baza de date.');
+      res.redirect('/policlinici');
+    } else {
+      res.render('policlinica_single', {
+        policlinica: policlinica[0],
+        cabinete: cabinete,
+        orar: orar
+      });
+    }
   }
 };

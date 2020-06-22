@@ -1,0 +1,46 @@
+extends layout
+
+block content
+  //- pre= h.dump(locals.serviciu)
+  section.relative.py-16
+    .container.mx-auto
+      .relative.flex.flex-col.min-w-0.break-words.bg-white.w-full.mb-6.shadow-2xl.rounded-lg
+        .px-6
+          .flex.flex-wrap.justify-center.relative
+            .w-full.px-4.flex.justify-center(class='lg:w-3/12')
+              .relative
+                i.fal.fa-head-side-medical.fa-fw.text-8xl.my-8
+          .text-center.mt-12.mb-12
+            h3.text-4xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-2
+              | #{serviciu.denumire_serviciu}
+            .mb-2.text-gray-700
+              i.fas.fa-university.mr-2.text-lg.text-gray-500
+              | #{serviciu.specialitate_medicala}
+            .mb-2.text-gray-700 #{serviciu.cost_serviciu} RON
+            .mb-2.text-gray-700 #{serviciu.durata_minima.slice(0, -3)} h - #{serviciu.durata_maxima.slice(0, -3)} h
+          if !h.isEmptyObject(locals.medici_serivciu)
+            .mt-10.py-10.border-t.border-gray-300.text-center
+              h3.text-3xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-4 Medici
+              .flex.flex-wrap.justify-center
+                .w-full.grid.grid-cols-3.gap-4.mb-6(class='lg:w-9/12')
+                  each medic in medici_serivciu
+                    .bg-white.rounded-lg.p-4.shadow
+                      div
+                        i.fal.fa-user-md.fa-fw.text-4xl.my-4
+                        p.text-sm.font-semibold 
+                          a(href=`/medici/${medic.link_medic_id}`) #{medic.nume}
+                        p.text-sm #{medic.grad_profesional}
+          if !h.isEmptyObject(locals.cabinete_serviciu)
+            .mt-10.py-10.border-t.border-gray-300.text-center
+              h3.text-3xl.font-semibold.leading-normal.mb-2.text-gray-800.mb-4 Cabinete disponibile în Policlinicile noastre
+              .flex.flex-wrap.justify-center
+                .w-full.grid.grid-cols-3.gap-4.mb-6(class='lg:w-9/12')
+                  each cabinet in cabinete_serviciu
+                    .bg-white.rounded-lg.p-4.shadow
+                      div
+                        i.fal.fa-user-md.fa-fw.text-4xl.my-4
+                        p.text-sm.font-semibold 
+                          a(href=`/policlinici/${cabinet.link_policlinica_id}`) #{cabinet.policlinica}
+                        p.text-sm #{cabinet.denumire}
+                        p.text-sm #{cabinet.zona}
+  

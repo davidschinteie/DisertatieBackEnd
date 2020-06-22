@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  .flex.justify-between.items-center
+    // Title
+    h1.flex.items-center.font-sans.font-bold.break-normal.text-indigo-500.px-2.py-8.text-xl(class='md:text-2xl') Policlinici (#{Object.keys(policlinici).length})
+  // Card
+  #recipients.p-6.mt-6.rounded.shadow.bg-white(class='lg:mt-0')
+    .dataTables_wrapper
+      table#example.stripe.hover.dataTable(style='width:100%; padding-top: 1em;  padding-bottom: 1em;')
+        thead
+          tr
+            th(data-priority='1') Denumire
+            th(data-priority='2') Email
+            th(data-priority='3') Telefon
+            th(data-priority='4') Adresa
+            th(data-priority='5') Zona
+            th(data-priority='5') Link Policlinica
+        tbody
+          each policlinica in policlinici
+            tr
+              td= policlinica.denumire
+              td= policlinica.email
+              td= policlinica.telefon
+              td= policlinica.zona
+              td= policlinica.adresa
+              td 
+                a(href=`/policlinici/${policlinica.id_policlinica}` class="font-bold") Vezi detalii
+

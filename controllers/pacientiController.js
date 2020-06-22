@@ -128,6 +128,35 @@ exports.addPacientView = async (req, res) => {
   }
 };
 
+exports.newPacientView = async (req, res) => {
+  let asigurari_query = `select id_asigurare, denumire from asigurareMedicala;`,
+    zona_query = `select id_zona, denumire from Zona;`,
+    grupe_query = `select distinct grupa_sanguina from Donator ORDER BY FIELD(grupa_sanguina, '0_I pozitiv','0_I negativ','A_II pozitiv','A_II negativ','B_III pozitiv', 'B_III negativ', 'AB_IV pozitiv', 'AB_IV negativ');`;
+
+  // execute query
+  const db = helpers.makeDb(helpers.db_config);
+
+  let asigurari, zone, grupe;
+
+  try {
+    asigurari = await db.query(asigurari_query);
+    zone = await db.query(zona_query);
+    grupe = await db.query(grupe_query);
+  } catch (err) {
+    req.flash('error', err.map((err) => err.msg));
+    res.redirect('/pacienti');
+  } finally {
+    await db.close();
+    res.render('pacient_add', {
+      title: `Crearea unui cont nou`,
+      subtitle: 'Pentru a crea un cont nou, introdu datele tale in formularul de mai jos',
+      asigurari: asigurari,
+      zone: zone,
+      grupe: grupe
+    });
+  }
+};
+
 exports.addPacient = async (req, res) => {
   // @todo: validare nume, prenume, grad_profesional, specialitate, email, telefon, salariu, data_angajarii din frontend inainte de a ajunge in backend ..
   // @todo: adaugarea programului medicului din acest view - cabinetele de specialitatea sa care au ferestre de program deschise

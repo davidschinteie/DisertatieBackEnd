@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .flex.justify-between.items-center
+    // Title
+    h1.flex.items-center.font-sans.font-bold.break-normal.text-indigo-500.px-2.py-8.text-xl(class='md:text-2xl') Servicii Medicale (#{Object.keys(servicii).length})
+  // Card
+  #recipients.p-6.mt-6.rounded.shadow.bg-white(class='lg:mt-0')
+    .dataTables_wrapper
+      table#example.stripe.hover.dataTable(style='width:100%; padding-top: 1em;  padding-bottom: 1em;')
+        thead
+          tr
+            th(data-priority='1') Denumire
+            th(data-priority='2') Specialitate Medicala
+            th(data-priority='3') Cost Serviciu
+            th(data-priority='4') Durata
+            th(data-priority='5') Link Serviciu
+        tbody
+          each serviciu in servicii
+            tr
+              td= serviciu.denumire_serviciu
+              td= serviciu.specialitate_medicala
+              td #{serviciu.cost_serviciu} RON
+              td #{serviciu.durata_minima.slice(0, -3)} h - #{serviciu.durata_maxima.slice(0, -3)} h
+              td 
+                a(href=`/servicii/${serviciu.link_serviciu_id}` class="font-bold") Vezi detalii
+
