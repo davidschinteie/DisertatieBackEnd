@@ -1,4 +1,92 @@
 extends layout
 
-block content
-  h1 @ToDo: Landing Page
+block landingPage
+  section.header.relative.py-16.items-center.flex(style='max-height: 860px;')
+    .container.w-full.mx-auto
+      .w-full.px-4.mb-8.text-gray-800.leading-normal.items-center.flex.flex-wrap(class='md:flex-no-wrap md:px-0 md:mt-8')
+        .w-full.px-4
+          .pt-32(class='sm:pt-0')
+            h2.font-semibold.text-4xl.text-gray-700 O aplicație web pentru accesul la informațiile medicale
+            p.mt-4.text-lg.leading-relaxed.text-gray-600
+              | Această aplicație oferă utilizatorilor săi o modalitate ușoară și facilă în gestionarea programărilor la clinicile medicale 
+            .mt-12
+              a.get-started.text-white.font-bold.px-6.py-4.rounded.outline-none.mr-1.mb-1.bg-pink-500.uppercase.text-sm.shadow(class='focus:outline-none active:bg-pink-600 hover:shadow-lg', href='/pacienti/inregistrare', style='transition: all 0.15s ease 0s;') Cont nou
+              a.github-star.ml-1.text-white.font-bold.px-6.py-4.rounded.outline-none.mr-1.mb-1.bg-gray-800.uppercase.text-sm.shadow(href='/login', class='focus:outline-none active:bg-gray-700 hover:shadow-lg') Inregistrează-te
+        img.pt-16.-mt-48(class='sm:w-6/12 sm:mt-0 w-10/12', src='/images/photos/landing_medical.svg', alt='...', style='max-height: 860px;')
+    .top-auto.bottom-0.left-0.right-0.w-full.absolute.pointer-events-none.overflow-hidden(style='height: 70px; transform: translateZ(0px);')
+      svg.absolute.bottom-0.overflow-hidden(xmlns='http://www.w3.org/2000/svg', preserveAspectRatio='none', version='1.1', viewBox='0 0 2560 100', x='0', y='0')
+        polygon.text-gray-300.fill-current(points='2560 0 2560 100 0 100')
+  section.bg-gray-300.pb-20
+    .container.w-full.mx-auto
+      .flex.flex-wrap.items-center
+        img.pt-16.-mt-48(class='sm:w-6/12 sm:mt-0 w-10/12', src='/images/photos/draw_medici.svg', alt='...', style='max-height: 860px;')
+        .w-full.px-4.ml-auto(class='md:w-5/12')
+          .text-gray-600.p-3.text-center.inline-flex.items-center.justify-center.w-16.h-16.mb-6.shadow-lg.rounded-full.bg-gray-100
+            i.fas.fa-user-md.text-4xl
+          h3.text-3xl.mb-2.font-semibold.leading-normal Lista medicilor clinicii
+          p.text-lg.font-light.leading-relaxed.mt-4.mb-4.text-gray-700
+            | Vizualizează lista medicilor clinicii împreună cu serviciile medicale oferite de fiecare, datele de contact (mail și număr de telefon) precum și orarul acestora.
+          a.font-bold.text-gray-800.mt-8(href='/medici') Vezi lista medicilor
+  section.relative.py-20
+    .bottom-auto.top-0.left-0.right-0.w-full.absolute.pointer-events-none.overflow-hidden.-mt-20(style='height: 80px; transform: translateZ(0px);')
+      svg.absolute.bottom-0.overflow-hidden(xmlns='http://www.w3.org/2000/svg', preserveAspectRatio='none', version='1.1', viewBox='0 0 2560 100', x='0', y='0')
+        polygon.text-white.fill-current(points='2560 0 2560 100 0 100')
+    .container.w-full.mx-auto
+      .flex.flex-wrap.items-center
+        .w-full.mr-auto.px-4(class='md:w-5/12')
+          div(class='md:pr-12')
+            .text-pink-600.p-3.text-center.inline-flex.items-center.justify-center.w-16.h-16.mb-6.shadow-lg.rounded-full.bg-pink-300
+              i.fas.fa-map-marked-alt.text-4xl
+            h3.text-3xl.font-semibold Locații Policlinici
+            p.mt-4.text-lg.leading-relaxed.text-gray-600
+              | Vizualizează lista policlinicilor medicale împreună cu datele de contact, adresa locațiilor precum și lista cabinetelor medicale disponibile.
+            a.get-started.text-white.font-bold.px-6.py-4.rounded.outline-none.mr-1.mb-1.mt-6.inline-block.bg-pink-500.uppercase.text-sm.shadow(class='focus:outline-none active:bg-pink-600 hover:shadow-lg', href='/policlinici', style='transition: all 0.15s ease 0s;') Vizualizează policlinici
+        img.pt-16.-mt-48(class='sm:w-6/12 sm:mt-0 w-10/12', alt='...', src='/images/photos/listare_policlinici.svg')
+  section.relative.py-20
+    .bottom-auto.top-0.left-0.right-0.w-full.absolute.pointer-events-none.overflow-hidden.-mt-20(style='height: 80px; transform: translateZ(0px);')
+      svg.absolute.bottom-0.overflow-hidden(xmlns='http://www.w3.org/2000/svg', preserveAspectRatio='none', version='1.1', viewBox='0 0 2560 100', x='0', y='0')
+        polygon.text-white.fill-current(points='2560 0 2560 100 0 100')
+    .container.w-full.mx-auto
+      .flex.flex-wrap.items-center
+        .w-full.px-4.mr-auto.ml-auto(class='md:w-6/12')
+          .justify-center.flex.flex-wrap.relative
+            .my-4.w-full.px-4(class='lg:w-6/12')
+              .bg-green-500.shadow-lg.rounded-lg.text-center.p-8
+                .text-gray-600.p-3.text-center.inline-flex.items-center.justify-center.w-16.h-16.mb-6.shadow-lg.rounded-full.bg-gray-100
+                  i.fab.fa-node.text-4xl
+                p.text-lg.text-white.mt-4.font-semibold NodeJS
+                p.text-base.text-white.opacity-75.mt-2
+                  | Un ecosistem de JavaScript bazat pe motorul V8 de la Google Chrome
+              .bg-blue-500.shadow-lg.rounded-lg.text-center.p-8.mt-8
+                .text-gray-600.p-3.text-center.inline-flex.items-center.justify-center.w-16.h-16.mb-6.shadow-lg.rounded-full.bg-gray-100
+                  i.fas.fa-database.text-4xl
+                p.text-lg.text-white.mt-4.font-semibold MySQL
+                p.text-base.text-white.opacity-75.mt-2
+                  | Sistem de gestionare a bazei de date.
+            .my-4.w-full.px-4(class='lg:w-6/12 lg:mt-16')
+              .bg-orange-500.shadow-lg.rounded-lg.text-center.p-8
+                .text-gray-600.p-3.text-center.inline-flex.items-center.justify-center.w-16.h-16.mb-6.shadow-lg.rounded-full.bg-gray-100
+                  i.fab.fa-js.text-4xl
+                p.text-lg.text-white.mt-4.font-semibold JavaScript
+                p.text-base.text-white.opacity-75.mt-2
+                  | Limbaj de programare orientat obiect bazat pe conceptul prototipurilor.
+              .bg-red-600.shadow-lg.rounded-lg.text-center.p-8.mt-8
+                .text-gray-600.p-3.text-center.inline-flex.items-center.justify-center.w-16.h-16.mb-6.shadow-lg.rounded-full.bg-gray-100
+                  i.fab.fa-css3-alt.text-4xl
+                p.text-lg.text-white.mt-4.font-semibold TailwindCSS
+                p.text-base.text-white.opacity-75.mt-2
+                  | Framework de CSS care oferă clase low-level utility.
+        .w-full.px-12.ml-auto.mr-auto.mt-48(class='md:w-4/12 md:px-4')
+          .text-gray-600.p-3.text-center.inline-flex.items-center.justify-center.w-16.h-16.mb-6.shadow-lg.rounded-full.bg-white
+            i.fad.fa-code.text-4xl
+          h3.text-3xl.mb-2.font-semibold.leading-normal Codul sursă al aplicației
+          p.text-lg.font-light.leading-relaxed.mt-4.mb-4.text-gray-700
+            | Tehnologiile folosite pentru acest proiect împreună cu codul sursă al aplicației care poate fi regăsit în link-urile următoare:
+            a.font-bold.text-gray-800.mt-4.block(href='https://github.com/davidschinteie/DisertatieBackEnd', target='_blank')
+              i.fab.fa-github.bg-white.text-gray-900.shadow-lg.font-lg.p-3.items-center.justify-center.align-center.rounded-full.outline-none.mr-2.inline-block.text-center(class='focus:outline-none')
+              | Codul sursă backend și frontend
+            a.font-bold.text-gray-800.mt-4.block(href='https://github.com/davidschinteie/disertatieDB', target='_blank')
+              i.fab.fa-github.bg-white.text-gray-900.shadow-lg.font-lg.p-3.items-center.justify-center.align-center.rounded-full.outline-none.mr-2.inline-block.text-center(class='focus:outline-none')
+              | Codul sursă și modelul bazei de date 
+
+          

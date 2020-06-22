@@ -366,5 +366,7 @@ select * from serviciuMedical where denumire_serviciu = 'Consult epidemiologie';
 
 
 select * from Utilizator;
+select id_programare from Programare where id_medic = (select id_medic from Medic where id_utilizator = (select id_utilizator from Utilizator where nume_utilizator = 'vlad.predescu'));
+select id_programare from Programare where id_pacient = (select id_pacient from Pacient where id_utilizator = (select id_utilizator from Utilizator where nume_utilizator = 'crsitian_tudorica'));
 
 insert into Utilizator(nume, prenume, email, nume_utilizator, parola_criptata, id_rol) values ('Schinteie', 'David', 'davidschinteie@gmail.com', 'davidschinteie', '$2b$10$C13g5hx1IHY.TzTT877If.63rTLDuciB.Vurk362Qn4RA/3ldCOTO', 1);

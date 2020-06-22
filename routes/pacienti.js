@@ -42,8 +42,10 @@ function loginRequiredAdmin(req, res, next) {
 router.get('/', loginRequired, loginRequiredMedic, pacientiController.getAllPacienti);
 
 // Vizualizarea formularului de adaugare al unui nou pacient
-// numai de catre admin
+// numai de catre medic sau admin
 router.get('/add', loginRequired, loginRequiredMedic, pacientiController.addPacientView);
+
+router.get('/inregistrare', pacientiController.newPacientView);
 
 // Vizualizarea formularului de editare al unui pacient
 // doar pacientul, medicii sau admin-ul
@@ -55,6 +57,9 @@ router.get('/:id', loginRequired, loginRequiredPacient, pacientiController.getSi
 
 // Adaugarea unui nou pacient
 router.post('/add', loginRequired, loginRequiredMedic, pacientiController.addPacient);
+
+// Crearea unui nou cont de pacient
+// router.post('/add', pacientiController.addPacient);
 
 // Actualizarea unui pacient
 router.post('/:id/edit', loginRequired, loginRequiredMedic, pacientiController.updatePacient);
