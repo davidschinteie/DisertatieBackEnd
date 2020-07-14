@@ -9,12 +9,12 @@ mixin utilizatorForm(utilizator = {})
       .w-full.px-3.mb-6(class='md:w-1/2 md:mb-0')
         label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-first-name')
           | Nume
-        input#grid-first-name.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.rounded.py-3.px-4.mb-3.leading-tight(class='focus:outline-none focus:bg-white' type='text' placeholder='Jane' name='nume' value=utilizator.nume)
+        input#grid-first-name.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.rounded.py-3.px-4.mb-3.leading-tight(class='focus:outline-none focus:bg-white' type='text' placeholder='Nume' name='nume' value=utilizator.nume)
         //- p.text-red-500.text-xs.italic Please fill out this field.
       .w-full.px-3(class='md:w-1/2')
         label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-last-name')
           | Prenume
-        input#grid-last-name.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='text' placeholder='Doe' name="prenume" value=utilizator.prenume)
+        input#grid-last-name.appearance-none.block.w-full.bg-gray-200.text-gray-700.border.border-gray-200.rounded.py-3.px-4.leading-tight(class='focus:outline-none focus:bg-white focus:border-gray-500' type='text' placeholder='Prenume' name="prenume" value=utilizator.prenume)
     .flex.flex-wrap.-mx-3.mb-6
       .w-full.px-3(class='md:w-1/2')
         label.block.uppercase.tracking-wide.text-gray-700.text-xs.font-bold.mb-2(for='grid-user-name')

@@ -1,4 +1,5 @@
 const helpers = require('../helpers');
+const bcrypt = require("bcrypt")
 
 exports.getAllPacienti = async (req, res) => {
   // query database to get all the doctors
@@ -192,7 +193,7 @@ exports.addPacient = async (req, res) => {
   }
 
   bcrypt.hash(parola, 10, async (err, hash) => {
-    let check_duplicate_query = ``,
+    let check_duplicate_query = `select * from Utilizator where nume_utilizator = '${nume_utilizator}';`,
       insert_utilizator_query = `insert into Utilizator(nume, prenume, email, telefon, nume_utilizator, parola_criptata, id_rol) values ('${nume}', '${prenume}', '${email}', '${telefon}', '${nume_utilizator}', '${hash}', 3);`,
       insert_pacient_query = `insert into Pacient(data_nasterii, id_zona, id_asigurare, id_utilizator) values ('${data_nasterii}', '${zona}', '${asigurare}', (select id_utilizator from Utilizator where nume_utilizator = '${nume_utilizator}'))`,
       insert_donator_query = `insert into Donator (grupa_sanguina, data_ultimei_donari, id_pacient) values ('${grupa_sanguina}', '${data_ultimei_donari}', (select id_pacient from Pacient order by id_pacient desc limit 1));`,
@@ -204,10 +205,17 @@ exports.addPacient = async (req, res) => {
 
     // execute query
     try {
+      const check_duplicate = await db.query(check_duplicate_query);
+      if (check_duplicate.length !== 0) {
+        await db.close();
+        req.flash('error', `Utilizatorul ${nume_utilizator} exista deja in baza de date!`);
+        res.redirect('/pacienti/add');
+        throw new Error(`Utilizatorul ${nume_utilizator} exista deja in baza de date!`);
+      }
       const insert_utilizator = await db.query(insert_utilizator_query);
       const insert_pacient = await db.query(insert_pacient_query);
       pacient_id = await db.query(pacient_id_query);
-      console.log(pacient_id);
+      // console.log(pacient_id);
 
       if (grupa_sanguina && data_ultimei_donari) {
         insert_donator = await db.query(insert_donator_query);
@@ -220,6 +228,87 @@ exports.addPacient = async (req, res) => {
       await db.close();
       req.flash('success', `Pacientul ${nume} ${prenume} a fost adaugat cu succes in baza de date.`);
       res.redirect(`/pacienti/${pacient_id[0].id_pacient}`);
+    }
+  })
+
+};
+
+exports.inregistrarePacient = async (req, res) => {
+  // @todo: validare nume, prenume, grad_profesional, specialitate, email, telefon, salariu, data_angajarii din frontend inainte de a ajunge in backend ..
+  // @todo: adaugarea programului medicului din acest view - cabinetele de specialitatea sa care au ferestre de program deschise
+  // @todo: verificare daca nume_utilizator este deja folosit
+
+  // res.json(req.body);
+  let nume = req.body.nume,
+    prenume = req.body.prenume,
+    nume_utilizator = req.body.nume_utilizator,
+    parola = req.body.parola,
+    email = req.body.email,
+    telefon = req.body.telefon,
+    asigurare = req.body.asigurare,
+    zona = req.body.zona,
+    data_nasterii = req.body.data_nasterii,
+    grupa_sanguina = req.body.grupa_sanguina,
+    data_ultimei_donari = req.body.data_ultimei_donari;
+
+  // validate information
+  req.checkBody('nume', 'Campul de nume este obligatoriu').notEmpty();
+  req.checkBody('prenume', 'Campul de prenume este obligatoriu.').notEmpty();
+  req.checkBody('nume_utilizator', 'Campul de nume utilizator este obligatoriu.').notEmpty();
+  req.checkBody('parola', 'Parola trebuie sa fie de minim 8 caractere.').isLength({
+    min: 8
+  });
+  req.checkBody('email', 'Introduceti o adresa de email valid.').isEmail();
+
+  // if there are errors, redirect and save errors to flash
+  const errors = req.validationErrors();
+  if (errors) {
+    req.flash('errors', errors.map((err) => err.msg));
+    return res.redirect('/pacienti/inregistrare');
+  }
+
+  bcrypt.hash(parola, 10, async (err, hash) => {
+    let check_duplicate_query = `select * from Utilizator where nume_utilizator = '${nume_utilizator}';`,
+      insert_utilizator_query = `insert into Utilizator(nume, prenume, email, telefon, nume_utilizator, parola_criptata, id_rol) values ('${nume}', '${prenume}', '${email}', '${telefon}', '${nume_utilizator}', '${hash}', 3);`,
+      insert_pacient_query = `insert into Pacient(data_nasterii, id_zona, id_asigurare, id_utilizator) values ('${data_nasterii}', '${zona}', '${asigurare}', (select id_utilizator from Utilizator where nume_utilizator = '${nume_utilizator}'))`,
+      insert_donator_query = `insert into Donator (grupa_sanguina, data_ultimei_donari, id_pacient) values ('${grupa_sanguina}', '${data_ultimei_donari}', (select id_pacient from Pacient order by id_pacient desc limit 1));`,
+      pacient_query = `select id_pacient from Pacient order by id_pacient desc limit 1;`;
+    let utilizator_query = `select * from Utilizator where nume_utilizator = '${nume_utilizator}';`;
+
+    // execute query
+    const db = helpers.makeDb(helpers.db_config);
+    let pacient_id, utilizator_response;
+
+    // execute query
+    try {
+      const check_duplicate = await db.query(check_duplicate_query);
+      if (check_duplicate.length !== 0) {
+        await db.close();
+        req.flash('error', `Utilizatorul ${nume_utilizator} exista deja in baza de date!`);
+        res.redirect('/pacienti/inregistrare');
+        throw new Error(`Utilizatorul ${nume_utilizator} exista deja in baza de date!`);
+      }
+      const insert_utilizator = await db.query(insert_utilizator_query);
+      const insert_pacient = await db.query(insert_pacient_query);
+      pacient = await db.query(pacient_query);
+      // console.log(pacient_id);
+      utilizator_response = await db.query(utilizator_query);
+
+      if (grupa_sanguina && data_ultimei_donari) {
+        insert_donator = await db.query(insert_donator_query);
+      }
+    } catch (err) {
+      console.log(err);
+      req.flash('error', err.map((err) => err.msg));
+      res.redirect('/pacienti/inregistrare');
+    } finally {
+      await db.close();
+      req.session.utilizatorId = utilizator_response[0].id_utilizator;
+      req.session.utilizator = utilizator_response[0];
+      req.session.pacient = pacient[0];
+      // req.session.programari = programari_pacient;
+      req.flash('success', `Buna ${nume} ${prenume}, ai fost adaugat cu succes in baza de date.`);
+      res.redirect(`/pacienti/${pacient[0].id_pacient}`);
     }
   })
 

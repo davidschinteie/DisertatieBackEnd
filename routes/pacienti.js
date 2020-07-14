@@ -56,7 +56,9 @@ router.get('/:id/edit', loginRequired, loginRequiredPacient, pacientiController.
 router.get('/:id', loginRequired, loginRequiredPacient, pacientiController.getSinglePacient);
 
 // Adaugarea unui nou pacient
-router.post('/add', loginRequired, loginRequiredMedic, pacientiController.addPacient);
+router.post('/add', pacientiController.addPacient);
+// Inregistrarea unui nou pacient
+router.post('/inregistrare', pacientiController.inregistrarePacient);
 
 // Crearea unui nou cont de pacient
 // router.post('/add', pacientiController.addPacient);

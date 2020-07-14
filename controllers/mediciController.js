@@ -259,7 +259,7 @@ exports.addMedic = async (req, res) => {
   }
 
   bcrypt.hash(parola, 10, async (err, hash) => {
-    let check_duplicate_query = ``;
+    let check_duplicate_query = `select * from Utilizator where nume_utilizator = '${nume_utilizator}';`;
     let insert_utilizator_query = `insert into Utilizator(nume, prenume, email, telefon, nume_utilizator, parola_criptata, id_rol) values ('${nume}', '${prenume}', '${email}', '${telefon}', '${nume_utilizator}', '${hash}', 4);`;
     let insert_medic_query = `insert into Medic(id_grad, id_specialitate, id_utilizator) values ('${grad_profesional}', '${specialitate}', (select id_utilizator from Utilizator where nume_utilizator = '${nume_utilizator}'))`;
     let medic_id_query = `select id_medic from Medic order by id_medic desc limit 1`;
@@ -270,15 +270,26 @@ exports.addMedic = async (req, res) => {
 
     // execute query
     try {
+      const check_duplicate = await db.query(check_duplicate_query);
+      if (check_duplicate.length !== 0) {
+        await db.close();
+        req.flash('error', `Utilizatorul ${nume_utilizator} exista deja in baza de date!`);
+        res.redirect('/pacienti/add');
+        throw new Error(`Utilizatorul ${nume_utilizator} exista deja in baza de date!`);
+      }
       const insert_utilizator = await db.query(insert_utilizator_query);
       const insert_medic = await db.query(insert_medic_query);
       medic_id = await db.query(medic_id_query);
+      // console.log(medic_id);
+
     } catch (err) {
+      console.log(err);
       req.flash('error', err.map(err => err.msg));
       res.redirect('/medici/add');
     } finally {
       await db.close();
       req.flash('success', `Medicul ${nume} ${prenume} a fost adaugat cu succes in baza de date.`);
+
       res.redirect(`/medici/${medic_id[0].id_medic}`);
     }
   })
@@ -370,7 +381,7 @@ exports.programareMedic = async (req, res) => {
     return res.redirect(`/medici/${doctorId}/programare`);
   }
 
-  let check_duplicate_query = ``;
+  let check_duplicate_query = `select * from Programare where id_medic = ${doctorId} and moment_programare = '${data_programare} ${ora_programare}';`;
   let insert_programare_query = `insert into Programare (id_pacient, id_medic, id_cabinet, id_serviciu, moment_programare, durata, status_programare) values('${pacientId}', '${doctorId}', (select id_cabinet from OrarMedic where id_orar = ${orar_medic_id}), '${serviciu_medical_id}', '${data_programare} ${ora_programare}', (select durata_maxima from serviciuMedical where id_serviciu = ${serviciu_medical_id}), 'activa');`;
   let programare_id_query = `select id_programare from Programare order by id_programare desc limit 1`;
 
@@ -380,6 +391,13 @@ exports.programareMedic = async (req, res) => {
 
   // execute query
   try {
+    const check_duplicate = await db.query(check_duplicate_query);
+    if (check_duplicate.length !== 0) {
+      await db.close();
+      req.flash('error', `Programare duplicat: Va rugam sa alegeti un alt moment pentru programare!`);
+      return res.redirect(`/medici/${doctorId}/programare`);
+      throw new Error(`Programare duplicat in baza de date!`);
+    }
     const insert_programare = await db.query(insert_programare_query);
     programare_id = await db.query(programare_id_query);
   } catch (err) {

@@ -48,18 +48,18 @@ router.get('/', loginRequired, loginRequiredAdmin, programariController.getAllPr
 
 // Vizualizarea formularului de editare al unei programari
 // doar adminul, medicul sau pacientul din programare
-router.get('/:id/edit', loginRequired, loginRequiredPacientMedicAdmin, programariController.editProgramare);
+router.get('/:id/edit', loginRequired, programariController.editProgramare);
 
 // Vizualizarea unei singure programari
 // doar adminul, medicul sau pacientul din programare
-router.get('/:id', loginRequired, loginRequiredPacientMedicAdmin, programariController.getSingleProgramare);
+router.get('/:id', loginRequired, programariController.getSingleProgramare);
 
 // Actualizarea unei programari
 // doar adminul, medicul sau pacientul din programare
-router.post('/:id/edit', loginRequired, loginRequiredPacientMedicAdmin, programariController.updateProgramare);
+router.post('/:id/edit', loginRequired, programariController.updateProgramare);
 
 // Stergerea unei programari
 // doar adminul, medicul sau pacientul din programare
-router.post('/:id/delete', loginRequired, loginRequiredPacientMedicAdmin, programariController.deleteProgramare);
+router.post('/:id/delete', loginRequired, programariController.deleteProgramare);
 
 module.exports = router;

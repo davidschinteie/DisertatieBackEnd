@@ -13,7 +13,7 @@ function loginRequired(req, res, next) {
 
 function loginRequiredPacient(req, res, next) {
   if (req.session.utilizator.id_rol != 3) {
-    req.flash('error', `Drepturi insuficiente!`);
+    req.flash('error', `Drepturi insuficiente TEST!`);
     return res.redirect(`/utilizatori/${req.session.utilizatorId}`)
   }
   next()
@@ -43,11 +43,11 @@ router.get('/', mediciController.getAllMedici);
 
 // Vizualizarea formularului de adaugare al unui nou medic
 // doar admin-ul
-router.get('/add', loginRequired, loginRequiredAdmin, mediciController.addMedicView);
+router.get('/add', loginRequired, mediciController.addMedicView);
 
 // Vizualizarea formularului de editare al unui medic
 // doar medicul sau adminul
-router.get('/:id/edit', loginRequired, loginRequiredMedic, mediciController.editMedic);
+router.get('/:id/edit', loginRequired, mediciController.editMedic);
 
 // Vizualizarea formularului de programare al unui nou medic
 // doar pacientul
@@ -59,18 +59,18 @@ router.get('/:id', mediciController.getSingleMedic);
 
 // Adaugarea unui nou medic
 // doar admin-ul
-router.post('/add', loginRequired, loginRequiredAdmin, mediciController.addMedic);
+router.post('/add', loginRequired, mediciController.addMedic);
 
 // Actualizarea unui medic
 // doar medicul sau admin-ul
-router.post('/:id/edit', loginRequired, loginRequiredMedic, mediciController.updateMedic);
+router.post('/:id/edit', loginRequired, mediciController.updateMedic);
 
 // Adaugarea unei noi programari pentru medic
 // doar pacientul
-router.post('/:id/programare', loginRequired, loginRequiredPacient, mediciController.programareMedic);
+router.post('/:id/programare', mediciController.programareMedic);
 
 // Stergerea unui medic
 // doar admin-ul
-router.post('/:id/delete', loginRequired, loginRequiredAdmin, mediciController.deleteMedic);
+router.post('/:id/delete', loginRequired, mediciController.deleteMedic);
 
 module.exports = router;

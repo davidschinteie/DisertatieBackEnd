@@ -186,7 +186,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
       align-items: center;
       justify-content: center;
       background-color: #fff;
-      border: 2px solid #1da1f2 !important;
+      border: 2px solid #ccc !important;
       font-weight: bold;
       border-radius: 25%;
       width: 100%; }

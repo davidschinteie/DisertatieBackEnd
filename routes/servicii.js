@@ -8,10 +8,4 @@ router.get('/', serviciiController.getAllServicii);
 // Vizualizarea unui singur serviciu
 router.get('/:id', serviciiController.getSingleServiciu);
 
-// Adaugarea unui serviciu
-
-// Editarea unui serviciu
-
-// Stergerea unui serviciu
-
 module.exports = router;
