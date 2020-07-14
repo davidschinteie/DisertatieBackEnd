@@ -1,4 +1,6 @@
 use medicalAppDevelopment;
+
+select * from Utilizator;
 SET SQL_SAFE_UPDATES = 0;
 
 select concat(Utilizator.nume, ' ', Utilizator.prenume) as nume, GradProfesional.grad_profesional, 
@@ -370,3 +372,18 @@ select id_programare from Programare where id_medic = (select id_medic from Medi
 select id_programare from Programare where id_pacient = (select id_pacient from Pacient where id_utilizator = (select id_utilizator from Utilizator where nume_utilizator = 'crsitian_tudorica'));
 
 insert into Utilizator(nume, prenume, email, nume_utilizator, parola_criptata, id_rol) values ('Schinteie', 'David', 'davidschinteie@gmail.com', 'davidschinteie', '$2b$10$C13g5hx1IHY.TzTT877If.63rTLDuciB.Vurk362Qn4RA/3ldCOTO', 1);
+
+
+select id_medic from Medic order by id_medic desc limit 1;
+
+select * from Utilizator where ;
+
+alter table Utilizator add constraint utilizator_unic UNIQUE (nume_utilizator);
+
+select * from Programare;
+
+alter table Programare add constraint programare_unica UNIQUE (id_medic, moment_programare);
+
+SHOW INDEXES FROM Programare;
+
+alter table Programare drop index unique_index;

@@ -71,28 +71,9 @@ data_programare.addEventListener('change', (event) => {
 function get_features_serviciu(serviciu) {
   servicii_medicale.forEach((element) => {
     if (element.id_serviciu == serviciu) {
-      output_serviciu.innerHTML += `
+      output_serviciu.innerHTML = `
       <div class="flex ml-6 mb-6" id="serviciu_${element.id_serviciu}">
         <input type="radio" id="${element.id_serviciu}" value="${element.id_serviciu}" name="serviciu_id" checked>
-        <label class="bg-white rounded-lg p-4 shadow" for="${element.id_serviciu}">
-          <div>
-            <h3 class="text-3xl font-semibold leading-normal mb-2 text-gray-800 mb-4"> 
-              <i class="fas fa-hand-heart mr-2"></i>
-              ${element.denumire_serviciu}
-            </h3>
-            <p class="text-gray-900 font-medium">
-              Cost serviciu: ${element.cost_serviciu} RON
-            </p>
-            <p class="text-gray-900 font-medium">
-              Durata: ${element.durata_maxima.slice(0, -3)} h
-            </p>
-          </div>
-        </label>
-      </div>`;
-    } else {
-      output_serviciu.innerHTML += `
-      <div class="flex ml-6 mb-6" id="serviciu_${element.id_serviciu}">
-        <input type="radio" id="${element.id_serviciu}" value="${element.id_serviciu}" name="serviciu_id">
         <label class="bg-white rounded-lg p-4 shadow" for="${element.id_serviciu}">
           <div>
             <h3 class="text-3xl font-semibold leading-normal mb-2 text-gray-800 mb-4"> 
